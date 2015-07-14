@@ -30,10 +30,14 @@
  * @author Steve Guidetti
  */
 abstract class Goldsource extends Gameserver {
-    
+
     protected $port = 27015;
-    
+
     public function getConnectLink() {
         return 'steam://connect/' . $this->getAddress();
+    }
+
+    public function query() {
+
     }
 }

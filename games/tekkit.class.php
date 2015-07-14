@@ -30,10 +30,14 @@
  * @author Steve Guidetti
  */
 class Game_Tekkit extends Gameserver {
-    
+
     protected $port = 25565;
-    
+
     public function getGameName() {
         return 'Tekkit';
+    }
+
+    public function query() {
+
     }
 }

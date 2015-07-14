@@ -39,6 +39,11 @@ interface IGameserver {
     public function __construct($addr);
 
     /**
+     * Query the server for stats over the network
+     */
+    public function query();
+
+    /**
      * Get the full name of the game
      * 
      * @return string

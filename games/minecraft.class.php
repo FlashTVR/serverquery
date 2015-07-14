@@ -37,9 +37,6 @@ class Game_Minecraft extends Gameserver {
         return 'Minecraft';
     }
 
-    /**
-     * Request server stats
-     */
     public function query() {
         $fp = stream_socket_client('udp://' . $this->getAddress(), $errno, $errstr);
         if(!$fp) {
