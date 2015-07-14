@@ -35,7 +35,7 @@ abstract class Gameserver implements IGameserver {
      *
      * @var string Server IP address
      */
-    protected $ip = null;
+    protected $hostname = null;
     
     /**
      *
@@ -74,15 +74,15 @@ abstract class Gameserver implements IGameserver {
     protected function setAddress($addr) {
         if(strpos(':', $addr) !== false) {
             $parts = explode(':', $addr);
-            $this->ip = $parts[0];
+            $this->hostname = $parts[0];
             $this->port = (int)$parts[1];
         } else {
-            $this->ip = $addr;
+            $this->hostname = $addr;
         }
     }
 
     public function getAddress() {
-        return $this->ip . ':' . $this->port;
+        return $this->hostname . ':' . $this->port;
     }
 
     public function getMaxPlayers() {
