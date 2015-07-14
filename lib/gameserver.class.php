@@ -51,6 +51,12 @@ abstract class Gameserver implements IGameserver {
 
     /**
      *
+     * @var string Name of current map
+     */
+    protected $mapName = null;
+
+    /**
+     *
      * @var int Number of players connected
      */
     protected $playerCount = 0;
@@ -65,8 +71,13 @@ abstract class Gameserver implements IGameserver {
      *
      * @var array List of connected players
      */
-    protected $playerList = array();
+    protected $playerList = null;
 
+    /**
+     * Constructor
+     * 
+     * @param string $addr Full server address
+     */
     public function __construct($addr) {
         $this->setAddress($addr);
     }
@@ -75,6 +86,11 @@ abstract class Gameserver implements IGameserver {
         return $this->hostname . ':' . $this->port;
     }
 
+    /**
+     * Set full server address
+     * 
+     * @param string $addr Format: "hostname" or "hostname:port"
+     */
     protected function setAddress($addr) {
         if(strpos(':', $addr) !== false) {
             $parts = explode(':', $addr);
@@ -93,19 +109,70 @@ abstract class Gameserver implements IGameserver {
         return $this->name;
     }
 
+    /**
+     * Set server name
+     * 
+     * @param string $name
+     */
+    protected function setName($name) {
+        $this->name = $name;
+    }
+
     public function getMapName() {
-        return null;
+        return $this->mapName;
+    }
+
+    /**
+     * Set name of current map
+     * 
+     * @param string $mapName
+     */
+    protected function setMapName($mapName) {
+        $this->mapName = $mapName;
     }
 
     public function getPlayerCount() {
         return $this->playerCount;
     }
 
+    /**
+     * Set current player count
+     * 
+     * @param int $count
+     */
+    protected function setPlayerCount($count) {
+        if(!is_int($count)) {
+            throw new InvalidArgumentException;
+        }
+        $this->playerCount = $count;
+    }
+
     public function getMaxPlayers() {
         return $this->maxPlayers;
     }
 
+    /**
+     * Set maximum number of players allowed
+     * 
+     * @param int $maxPlayers
+     */
+    protected function setMaxPlayers($maxPlayers) {
+        if(!is_int($maxPlayers)) {
+            throw new InvalidArgumentException;
+        }
+        $this->maxPlayers = $maxPlayers;
+    }
+
     public function getPlayerList() {
         return $this->playerList;
+    }
+
+    /**
+     * Set current list of players
+     * 
+     * @param array $playerList
+     */
+    protected function setPlayerList(array $playerList) {
+        $this->playerList = $playerList;
     }
 }
