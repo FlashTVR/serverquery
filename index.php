@@ -24,3 +24,21 @@
  * THE SOFTWARE.
  */
 
+include 'config.php';
+include 'lib/igameserver.class.php';
+include 'lib/gameserver.class.php';
+
+foreach(SQConfig::$servers as $server) {
+    $className = SQConfig::$games[$server[0]][1];
+    if(!class_exists($className)) {
+        $fileName = 'games/';
+        $fileName .= strtolower(substr($className, strrpos($className, '_') + 1));
+        $fileName .= '.class.php';
+        require $fileName;
+    }
+    
+    $o = new $className($server[1]);
+    $o->query();
+    
+    var_dump($o);
+}

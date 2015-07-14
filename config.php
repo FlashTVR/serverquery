@@ -39,4 +39,10 @@ class SQConfig {
             'Tekkit', 'Game_Tekkit'
         ),
     );
+    
+    public static $servers = array(
+        array(
+            'minecraft', 'stevotvr.com'
+        ),
+    );
 }
