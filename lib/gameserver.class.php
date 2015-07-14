@@ -30,82 +30,82 @@
  * @author Steve Guidetti
  */
 abstract class Gameserver implements IGameserver {
-    
+
     /**
      *
-     * @var string Server IP address
+     * @var string Server hostname
      */
     protected $hostname = null;
-    
+
     /**
      *
      * @var int Server port
      */
     protected $port = 0;
-    
+
     /**
      *
      * @var string Server name
      */
     protected $name = null;
-    
+
     /**
      *
      * @var int Number of players connected
      */
     protected $playerCount = 0;
-    
+
     /**
      *
      * @var int Maximum number of players allowed
      */
     protected $maxPlayers = 0;
-    
+
     /**
      *
      * @var array List of connected players
      */
     protected $playerList = array();
-    
+
     public function __construct($addr) {
         $this->setAddress($addr);
-    }
-    
-    protected function setAddress($addr) {
-        if(strpos(':', $addr) !== false) {
-            $parts = explode(':', $addr);
-            $this->hostname = $parts[0];
-            $this->port = (int)$parts[1];
-        } else {
-            $this->hostname = $addr;
-        }
     }
 
     public function getAddress() {
         return $this->hostname . ':' . $this->port;
     }
 
-    public function getMaxPlayers() {
-        return $this->maxPlayers;
+    protected function setAddress($addr) {
+        if(strpos(':', $addr) !== false) {
+            $parts = explode(':', $addr);
+            $this->hostname = $parts[0];
+            $this->port = (int) $parts[1];
+        } else {
+            $this->hostname = $addr;
+        }
+    }
+
+    public function getConnectLink() {
+        return null;
     }
 
     public function getName() {
         return $this->name;
     }
 
+    public function getMapName() {
+        return null;
+    }
+
     public function getPlayerCount() {
         return $this->playerCount;
     }
 
+    public function getMaxPlayers() {
+        return $this->maxPlayers;
+    }
+
     public function getPlayerList() {
         return $this->playerList;
-    }
-    
-    public function getMapName() {
-        return null;
-    }
-    
-    public function getConnectLink() {
-        return null;
     }
 }

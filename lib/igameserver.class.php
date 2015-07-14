@@ -30,7 +30,7 @@
  * @author Steve Guidetti
  */
 interface IGameserver {
-    
+
     /**
      * Constructor
      * 
@@ -39,58 +39,58 @@ interface IGameserver {
     public function __construct($addr);
 
     /**
-     * Get server name
+     * Get the full name of the game
      * 
-     * @return string NULL if unsupported
+     * @return string
      */
-    public function getName();
-    
+    public function getGameName();
+
     /**
-     * Get server IP address
+     * Get full server address
      * 
      * @return string
      */
     public function getAddress();
-    
-    /**
-     * Get number of players connected to the server
-     * 
-     * @return int
-     */
-    public function getPlayerCount();
-    
-    /**
-     * Get maximum number of players allowed on the server
-     * 
-     * @return int
-     */
-    public function getMaxPlayers();
-    
-    /**
-     * Get list of players connected to the server
-     * 
-     * @return array NULL if unsupported
-     */
-    public function getPlayerList();
-    
-    /**
-     * Get name of map currently running
-     * 
-     * @return string NULL if unsupported
-     */
-    public function getMapName();
-    
+
     /**
      * Get link to connect directly to the server
      * 
      * @return string NULL if unsupported
      */
     public function getConnectLink();
-    
+
     /**
-     * Get the full name of the game
+     * Get server name
      * 
-     * @return string
+     * @return string NULL if unsupported
      */
-    public function getGameName();
+    public function getName();
+
+    /**
+     * Get name of map currently running
+     * 
+     * @return string NULL if unsupported
+     */
+    public function getMapName();
+
+    /**
+     * Get number of players connected to the server
+     * 
+     * @return int
+     */
+    public function getPlayerCount();
+
+    /**
+     * Get maximum number of players allowed on the server
+     * 
+     * @return int
+     */
+    public function getMaxPlayers();
+
+    /**
+     * Get list of players connected to the server
+     * 
+     * @return array NULL if unsupported
+     */
+    public function getPlayerList();
 }
