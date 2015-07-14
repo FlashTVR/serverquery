@@ -44,13 +44,6 @@ interface IGameserver {
     public function query();
 
     /**
-     * Get the full name of the game
-     * 
-     * @return string
-     */
-    public function getGameName();
-
-    /**
      * Get full server address
      * 
      * @return string

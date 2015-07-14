@@ -25,11 +25,11 @@
  */
 
 /**
- * Base class for all Goldsource-based games
+ * Base class for all Source-based games
  *
  * @author Steve Guidetti
  */
-abstract class Goldsource extends Gameserver {
+class Game_Source extends Gameserver {
 
     protected $port = 27015;
 

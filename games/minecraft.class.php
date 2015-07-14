@@ -33,10 +33,6 @@ class Game_Minecraft extends Gameserver {
 
     protected $port = 25565;
 
-    public function getGameName() {
-        return 'Minecraft';
-    }
-
     public function query() {
         $fp = stream_socket_client('udp://' . $this->getAddress(), $errno, $errstr);
         if(!$fp) {

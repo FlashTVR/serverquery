@@ -25,12 +25,19 @@
  */
 
 /**
- * Game: Day of Defeat
+ * Base class for all Goldsource-based games
  *
  * @author Steve Guidetti
  */
-class Game_DoD extends Goldsource {
-    public function getGameName() {
-        return 'Day of Defeat';
+class Game_Goldsource extends Gameserver {
+
+    protected $port = 27015;
+
+    public function getConnectLink() {
+        return 'steam://connect/' . $this->getAddress();
+    }
+
+    public function query() {
+
     }
 }

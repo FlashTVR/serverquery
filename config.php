@@ -1,6 +1,6 @@
 <?php
 
-/*
+/* 
  * The MIT License
  *
  * Copyright 2015 Steve Guidetti.
@@ -24,13 +24,19 @@
  * THE SOFTWARE.
  */
 
-/**
- * Game: Team Fortress 2
- *
- * @author Steve Guidetti
- */
-class Game_TF2 extends Source {
-    public function getGameName() {
-        return 'Team Fortress 2';
-    }
+class SQConfig {
+    public static $games = array(
+        'tf2' => array(
+            'Team Fortress 2', 'Game_Source'
+        ),
+        'dod' => array(
+            'Day of Defeat', 'Game_Goldsource'
+        ),
+        'minecraft' => array(
+            'Minecraft', 'Game_Minecraft'
+        ),
+        'tekkit' => array(
+            'Tekkit', 'Game_Tekkit'
+        ),
+    );
 }
