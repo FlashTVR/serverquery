@@ -29,7 +29,7 @@
  *
  * @author Steve Guidetti
  */
-abstract class Gameserver implements IGameserver {
+abstract class Gameserver {
 
     /**
      *
@@ -82,6 +82,11 @@ abstract class Gameserver implements IGameserver {
         $this->setAddress($addr);
     }
 
+    /**
+     * Get full server address
+     * 
+     * @return string
+     */
     public function getAddress() {
         return $this->hostname . ':' . $this->port;
     }
@@ -101,10 +106,20 @@ abstract class Gameserver implements IGameserver {
         }
     }
 
+    /**
+     * Get link to connect directly to the server
+     * 
+     * @return string NULL if unsupported
+     */
     public function getConnectLink() {
         return null;
     }
 
+    /**
+     * Get server name
+     * 
+     * @return string NULL if unsupported
+     */
     public function getName() {
         return $this->name;
     }
@@ -118,6 +133,11 @@ abstract class Gameserver implements IGameserver {
         $this->name = $name;
     }
 
+    /**
+     * Get name of map currently running
+     * 
+     * @return string NULL if unsupported
+     */
     public function getMapName() {
         return $this->mapName;
     }
@@ -131,6 +151,11 @@ abstract class Gameserver implements IGameserver {
         $this->mapName = $mapName;
     }
 
+    /**
+     * Get number of players connected to the server
+     * 
+     * @return int
+     */
     public function getPlayerCount() {
         return $this->playerCount;
     }
@@ -147,6 +172,11 @@ abstract class Gameserver implements IGameserver {
         $this->playerCount = $count;
     }
 
+    /**
+     * Get maximum number of players allowed on the server
+     * 
+     * @return int
+     */
     public function getMaxPlayers() {
         return $this->maxPlayers;
     }
@@ -163,6 +193,11 @@ abstract class Gameserver implements IGameserver {
         $this->maxPlayers = $maxPlayers;
     }
 
+    /**
+     * Get list of players connected to the server
+     * 
+     * @return array NULL if unsupported
+     */
     public function getPlayerList() {
         return $this->playerList;
     }
@@ -175,4 +210,9 @@ abstract class Gameserver implements IGameserver {
     protected function setPlayerList(array $playerList) {
         $this->playerList = $playerList;
     }
+
+    /**
+     * Query the server for stats over the network
+     */
+    public abstract function query();
 }

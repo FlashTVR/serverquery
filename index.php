@@ -25,7 +25,6 @@
  */
 
 include 'config.php';
-include 'lib/igameserver.class.php';
 include 'lib/gameserver.class.php';
 
 foreach(SQConfig::$servers as $server) {
