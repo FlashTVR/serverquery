@@ -27,6 +27,8 @@
 include 'config.php';
 include 'lib/gameserver.class.php';
 
+header('Content-Type: text/plain; charset=UTF-8');
+
 foreach(SQConfig::$servers as $server) {
     $className = SQConfig::$games[$server[0]][1];
     if(!class_exists($className)) {
