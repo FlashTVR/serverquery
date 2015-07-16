@@ -138,6 +138,7 @@ class Game_Minecraft extends Gameserver {
      */
     private function setServerInfo(array $info) {
         $this->setName($info['hostname']);
+        $this->setMapName($info['map']);
         $this->setPlayerCount((int)$info['numplayers']);
         $this->setMaxPlayers((int)$info['maxplayers']);
     }
