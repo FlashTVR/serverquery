@@ -39,6 +39,12 @@ abstract class Gameserver {
 
     /**
      *
+     * @var array Default configuration
+     */
+    protected $defaultConfig = array();
+
+    /**
+     *
      * @var string Server hostname
      */
     protected $hostname = null;
@@ -120,7 +126,7 @@ abstract class Gameserver {
      * @param array $config
      */
     protected function setConfig(array $config) {
-        $this->config = $config;
+        $this->config = array_merge($this->defaultConfig, $config);
     }
 
     /**
