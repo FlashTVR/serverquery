@@ -57,7 +57,7 @@ class Game_Minecraft extends Gameserver {
      * @throws Exception
      */
     protected function queryQuery() {
-        $fp = stream_socket_client('udp://' . $this->getAddress(), $errno, $errstr);
+        $fp = @stream_socket_client('udp://' . $this->getAddress(), $errno, $errstr);
         if(!$fp) {
             throw new Exception($errstr, $errno);
         }
@@ -192,7 +192,7 @@ class Game_Minecraft extends Gameserver {
      * @throws Exception
      */
     protected function queryLagacy() {
-        $fp = stream_socket_client('tcp://' . $this->getAddress(), $errno, $errstr);
+        $fp = @stream_socket_client('tcp://' . $this->getAddress(), $errno, $errstr);
         if(!$fp) {
             throw new Exception($errstr, $errno);
         }
