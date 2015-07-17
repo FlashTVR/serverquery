@@ -25,7 +25,7 @@
  */
 
 include 'config.php';
-include 'lib/gameserver.class.php';
+include 'lib/Gameserver.class.php';
 
 header('Content-Type: text/plain; charset=UTF-8');
 
@@ -33,7 +33,7 @@ foreach(SQConfig::$servers as $server) {
     $className = SQConfig::$games[$server['game']]['class'];
     if(!class_exists($className)) {
         $fileName = 'games/';
-        $fileName .= strtolower(substr($className, strrpos($className, '_') + 1));
+        $fileName .= substr($className, strrpos($className, '_') + 1);
         $fileName .= '.class.php';
         require $fileName;
     }
