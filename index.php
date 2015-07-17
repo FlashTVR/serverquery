@@ -30,7 +30,7 @@ include 'lib/gameserver.class.php';
 header('Content-Type: text/plain; charset=UTF-8');
 
 foreach(SQConfig::$servers as $server) {
-    $className = SQConfig::$games[$server[0]][1];
+    $className = SQConfig::$games[$server['game']]['class'];
     if(!class_exists($className)) {
         $fileName = 'games/';
         $fileName .= strtolower(substr($className, strrpos($className, '_') + 1));
@@ -38,7 +38,7 @@ foreach(SQConfig::$servers as $server) {
         require $fileName;
     }
     
-    $o = new $className($server[1]);
+    $o = new $className($server['addr']);
     $o->query();
     
     var_dump($o);

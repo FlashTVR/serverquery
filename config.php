@@ -27,22 +27,31 @@
 class SQConfig {
     public static $games = array(
         'tf2' => array(
-            'Team Fortress 2', 'Game_Source'
+            'name' => 'Team Fortress 2',
+            'class' => 'Game_Source'
         ),
         'dod' => array(
-            'Day of Defeat', 'Game_Goldsource'
+            'name' => 'Day of Defeat',
+            'class' => 'Game_Goldsource'
         ),
         'minecraft' => array(
-            'Minecraft', 'Game_MinecraftQuery'
+            'name' => 'Minecraft',
+            'class' => 'Game_MinecraftQuery'
+        ),
+        'minecraft_old' => array(
+            'name' => 'Minecraft',
+            'class' => 'Game_Minecraft'
         ),
         'tekkit' => array(
-            'Tekkit', 'Game_Minecraft'
+            'name' => 'Tekkit',
+            'class' => 'Game_Minecraft'
         ),
     );
     
     public static $servers = array(
         array(
-            'minecraft', '127.0.0.1'
+            'game' => 'minecraft',
+            'addr' => '127.0.0.1'
         ),
     );
 }
