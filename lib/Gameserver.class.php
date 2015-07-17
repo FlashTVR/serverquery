@@ -33,6 +33,12 @@ abstract class Gameserver {
 
     /**
      *
+     * @var array Miscellaneous configuration options
+     */
+    protected $config = array();
+
+    /**
+     *
      * @var string Server hostname
      */
     protected $hostname = null;
@@ -77,9 +83,11 @@ abstract class Gameserver {
      * Constructor
      * 
      * @param string $addr Full server address
+     * @param array $config Optional array of options for this instance
      */
-    public function __construct($addr) {
+    public function __construct($addr, array $config = array()) {
         $this->setAddress($addr);
+        $this->setConfig($config);
     }
 
     /**
@@ -104,6 +112,15 @@ abstract class Gameserver {
         } else {
             $this->hostname = $addr;
         }
+    }
+
+    /**
+     * Set the configuration for this instance
+     * 
+     * @param array $config
+     */
+    protected function setConfig(array $config) {
+        $this->config = $config;
     }
 
     /**
