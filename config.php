@@ -36,10 +36,6 @@ class SQConfig {
         ),
         'minecraft' => array(
             'name' => 'Minecraft',
-            'class' => 'Game_MinecraftQuery'
-        ),
-        'minecraft_old' => array(
-            'name' => 'Minecraft',
             'class' => 'Game_Minecraft'
         ),
         'tekkit' => array(
@@ -52,6 +48,13 @@ class SQConfig {
         array(
             'game' => 'minecraft',
             'addr' => '127.0.0.1'
+        ),
+        array(
+            'game' => 'minecraft',
+            'addr' => '127.0.0.1',
+            'config' => array(
+                'useLegacy' => true
+            )
         ),
     );
 }
