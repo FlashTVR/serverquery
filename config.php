@@ -33,16 +33,16 @@ class SQConfig {
             'Day of Defeat', 'Game_Goldsource'
         ),
         'minecraft' => array(
-            'Minecraft', 'Game_Minecraft'
+            'Minecraft', 'Game_MinecraftQuery'
         ),
         'tekkit' => array(
-            'Tekkit', 'Game_Tekkit'
+            'Tekkit', 'Game_Minecraft'
         ),
     );
     
     public static $servers = array(
         array(
-            'minecraft', 'stevotvr.com'
+            'minecraft', '127.0.0.1'
         ),
     );
 }
