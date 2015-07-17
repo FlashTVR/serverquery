@@ -38,7 +38,8 @@ foreach(SQConfig::$servers as $server) {
         require $fileName;
     }
     
-    $o = new $className($server['addr']);
+    $config = array_key_exists('config', $server) ? $server['config'] : array();
+    $o = new $className($server['addr'], $config);
     $o->query();
     
     var_dump($o);
