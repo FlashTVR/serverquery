@@ -39,8 +39,13 @@ foreach(SQConfig::$servers as $server) {
     }
     
     $config = array_key_exists('config', $server) ? $server['config'] : array();
-    $o = new $className($server['addr'], $config);
-    $o->query();
     
-    var_dump($o);
+    try {
+        $o = new $className($server['addr'], $config);
+        $o->query();
+
+        var_dump($o);
+    } catch (Exception $e) {
+        echo 'Error: ' . $e->getMessage() . PHP_EOL;
+    }
 }
