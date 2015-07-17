@@ -28,11 +28,11 @@ class SQConfig {
     public static $games = array(
         'tf2' => array(
             'name' => 'Team Fortress 2',
-            'class' => 'Game_Source'
+            'class' => 'Game_Valve'
         ),
         'dod' => array(
             'name' => 'Day of Defeat',
-            'class' => 'Game_Goldsource'
+            'class' => 'Game_Valve'
         ),
         'minecraft' => array(
             'name' => 'Minecraft',

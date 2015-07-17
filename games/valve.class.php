@@ -25,11 +25,11 @@
  */
 
 /**
- * Base class for all Source-based games
+ * Base class for all Valve-based games
  *
  * @author Steve Guidetti
  */
-class Game_Source extends Gameserver {
+class Game_Valve extends Gameserver {
 
     protected $port = 27015;
 
@@ -38,6 +38,6 @@ class Game_Source extends Gameserver {
     }
 
     public function query() {
-
+        
     }
 }
