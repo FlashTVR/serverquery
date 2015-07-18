@@ -39,13 +39,16 @@ foreach(SQConfig::$servers as $server) {
     }
     
     $config = array_key_exists('config', $server) ? $server['config'] : array();
+    if(array_key_exists('config', SQConfig::$games[$server['game']])) {
+        $config = array_merge(SQConfig::$games[$server['game']]['config'], $config);
+    }
     
+    $o = new $className($server['addr'], $config);
     try {
-        $o = new $className($server['addr'], $config);
         $o->query();
-
-        var_dump($o);
     } catch (Exception $e) {
         echo 'Error: ' . $e->getMessage() . PHP_EOL;
     }
+    
+    var_dump($o);
 }

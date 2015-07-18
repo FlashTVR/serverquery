@@ -40,7 +40,10 @@ class SQConfig {
         ),
         'tekkit' => array(
             'name' => 'Tekkit',
-            'class' => 'Game_Minecraft'
+            'class' => 'Game_Minecraft',
+            'config' => array(
+                'useLegacy' => true
+            )
         ),
     );
     
@@ -55,6 +58,10 @@ class SQConfig {
             'config' => array(
                 'useLegacy' => true
             ),
+        ),
+        array(
+            'game' => 'tekkit',
+            'addr' => '127.0.0.1'
         ),
     );
 }
