@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * The MIT License
  *
  * Copyright 2015 Steve Guidetti.
@@ -27,41 +27,41 @@
 class SQConfig {
     public static $games = array(
         'tf2' => array(
-            'name' => 'Team Fortress 2',
-            'class' => 'Game_Valve'
+            'name'  => 'Team Fortress 2',
+            'class' => 'Game_Valve',
         ),
         'dod' => array(
-            'name' => 'Day of Defeat',
-            'class' => 'Game_Valve'
+            'name'  => 'Day of Defeat',
+            'class' => 'Game_Valve',
         ),
         'minecraft' => array(
-            'name' => 'Minecraft',
-            'class' => 'Game_Minecraft'
+            'name'  => 'Minecraft',
+            'class' => 'Game_Minecraft',
         ),
         'tekkit' => array(
-            'name' => 'Tekkit',
+            'name'  => 'Tekkit',
             'class' => 'Game_Minecraft',
-            'config' => array(
-                'useLegacy' => true
-            )
+            'config'    => array(
+                'useLegacy' => true,
+            ),
         ),
     );
-    
+
     public static $servers = array(
         array(
             'game' => 'minecraft',
-            'addr' => '127.0.0.1'
+            'addr' => '127.0.0.1',
         ),
         array(
             'game' => 'minecraft',
             'addr' => '127.0.0.1',
             'config' => array(
-                'useLegacy' => true
+                'useLegacy' => true,
             ),
         ),
         array(
             'game' => 'tekkit',
-            'addr' => '127.0.0.1'
+            'addr' => '127.0.0.1',
         ),
     );
 }
