@@ -146,6 +146,10 @@ class Game_Valve extends Gameserver {
         
         $buffer->set(fread($fp, 1400));
         
+        if($buffer->remaining() < 4) {
+            throw new Exception('Invalid response from server');
+        }
+        
         if($buffer->getLong() == -1) {
             return $buffer;
         } else {
