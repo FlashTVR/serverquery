@@ -80,6 +80,7 @@ class Game_Minecraft extends Gameserver {
      * @param resource $fp Handle to an open socket
      * @param int $sessId Session ID (random number)
      * @return int Token
+     * @throws Exception
      */
     private function performHandshake($fp, $sessId) {
         $req = pack('cccN', 0xFE, 0xFD, 9, $sessId);
@@ -102,6 +103,7 @@ class Game_Minecraft extends Gameserver {
      * @param resource $fp Handle to an open socket
      * @param int $sessId Session ID
      * @param int $token Challenge token
+     * @throws Exception
      */
     private function requestStat($fp, $sessId, $token) {
         $req = pack('cccNNN', 0xFE, 0xFD, 0, $sessId, $token, 0);

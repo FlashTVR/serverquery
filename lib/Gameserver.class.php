@@ -32,56 +32,65 @@
 abstract class Gameserver {
 
     /**
+     * Miscellaneous configuration options
      *
-     * @var array Miscellaneous configuration options
+     * @var array
      */
     protected $config = array();
 
     /**
+     * Default configuration
      *
-     * @var array Default configuration
+     * @var array
      */
     protected $defaultConfig = array();
 
     /**
+     * Server hostname
      *
-     * @var string Server hostname
+     * @var string
      */
     protected $hostname = null;
 
     /**
+     * Server port
      *
-     * @var int Server port
+     * @var int
      */
     protected $port = 0;
 
     /**
+     * Server name
      *
-     * @var string Server name
+     * @var string
      */
     protected $name = null;
 
     /**
+     * Name of current map
      *
-     * @var string Name of current map
+     * @var string
      */
     protected $mapName = null;
 
     /**
+     * Number of players connected
      *
-     * @var int Number of players connected
+     * @var int
      */
     protected $playerCount = 0;
 
     /**
+     * Maximum number of players allowed
      *
-     * @var int Maximum number of players allowed
+     * @var int
      */
     protected $maxPlayers = 0;
 
     /**
+     * List of connected players
      *
-     * @var array List of connected players
+     * @var array
      */
     protected $playerList = null;
 
@@ -208,6 +217,7 @@ abstract class Gameserver {
      * Set maximum number of players allowed
      * 
      * @param int $maxPlayers
+     * @throws InvalidArgumentException
      */
     protected function setMaxPlayers($maxPlayers) {
         if(!is_int($maxPlayers)) {

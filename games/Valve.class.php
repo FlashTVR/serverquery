@@ -36,8 +36,9 @@ class Game_Valve extends Gameserver {
     protected $port = 27015;
 
     /**
+     * Steam application id
      *
-     * @var int Steam application id
+     * @var int
      */
     protected $appId = -1;
 
