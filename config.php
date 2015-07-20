@@ -45,23 +45,35 @@ class SQConfig {
                 'useLegacy' => true,
             ),
         ),
+        'terraria' => array(
+            'name'  => 'Terraria',
+            'class' => 'Game_TShock',
+        ),
     );
 
     public static $servers = array(
+//        array(
+//            'game' => 'minecraft',
+//            'addr' => 'stevotvr.com',
+//        ),
+//        array(
+//            'game' => 'minecraft',
+//            'addr' => '127.0.0.1',
+//            'config' => array(
+//                'useLegacy' => true,
+//            ),
+//        ),
+//        array(
+//            'game' => 'tekkit',
+//            'addr' => '127.0.0.1',
+//        ),
         array(
-            'game' => 'minecraft',
-            'addr' => '127.0.0.1',
+            'game' => 'terraria',
+            'addr' => 'stevotvr.com',
         ),
-        array(
-            'game' => 'minecraft',
-            'addr' => '127.0.0.1',
-            'config' => array(
-                'useLegacy' => true,
-            ),
-        ),
-        array(
-            'game' => 'tekkit',
-            'addr' => '127.0.0.1',
-        ),
+//        array(
+//            'game' => 'tf2',
+//            'addr' => '216.75.12.158',
+//        ),
     );
 }
