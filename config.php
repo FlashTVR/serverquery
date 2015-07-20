@@ -52,28 +52,9 @@ class SQConfig {
     );
 
     public static $servers = array(
-//        array(
-//            'game' => 'minecraft',
-//            'addr' => 'stevotvr.com',
-//        ),
-//        array(
-//            'game' => 'minecraft',
-//            'addr' => '127.0.0.1',
-//            'config' => array(
-//                'useLegacy' => true,
-//            ),
-//        ),
-//        array(
-//            'game' => 'tekkit',
-//            'addr' => '127.0.0.1',
-//        ),
         array(
-            'game' => 'terraria',
-            'addr' => 'stevotvr.com',
+            'game' => 'tf2',
+            'addr' => '127.0.0.1:27015',
         ),
-//        array(
-//            'game' => 'tf2',
-//            'addr' => '216.75.12.158',
-//        ),
     );
 }

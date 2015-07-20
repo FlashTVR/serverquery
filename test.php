@@ -25,6 +25,7 @@
  */
 
 include 'config.php';
+include 'testconfig.php';
 include 'lib/Gameserver.class.php';
 
 header('Content-Type: text/plain; charset=UTF-8');
