@@ -32,6 +32,7 @@
 class Game_Minecraft extends Gameserver {
 
     protected $defaultConfig = array(
+        'queryPort' => 25565,
         'useLegacy' => false,
     );
 
@@ -57,7 +58,7 @@ class Game_Minecraft extends Gameserver {
      * @throws Exception
      */
     protected function queryQuery() {
-        $fp = @stream_socket_client('udp://' . $this->getAddress(), $errno, $errstr);
+        $fp = @stream_socket_client('udp://' . $this->getQueryAddress(), $errno, $errstr);
         if(!$fp) {
             throw new Exception($errstr, $errno);
         }
@@ -72,6 +73,15 @@ class Game_Minecraft extends Gameserver {
         $this->parseKeyValues($fp);
         fread($fp, 10);
         $this->parsePlayers($fp);
+    }
+
+    /**
+     * Get the address used to query the server
+     * 
+     * @return string
+     */
+    protected function getQueryAddress() {
+        return $this->hostname . ':' . $this->config['queryPort'];
     }
 
     /**
