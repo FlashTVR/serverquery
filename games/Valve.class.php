@@ -46,6 +46,19 @@ class Game_Valve extends Gameserver {
         return 'steam://connect/' . $this->getAddress();
     }
 
+    protected function setPlayerList(array $playerList) {
+        $filteredList = array();
+        foreach($playerList as $player) {
+            if($player === '') {
+                continue;
+            }
+            
+            $filteredList[] = $player;
+        }
+        
+        parent::setPlayerList($filteredList);
+    }
+
     public function query() {
         $fp = @stream_socket_client('udp://' . $this->getAddress(), $errno, $errstr);
         if(!$fp) {
