@@ -44,6 +44,14 @@ class Game_TShock extends Gameserver {
         }
         
         $obj = json_decode($res);
+        if(!$obj) {
+            throw new Exception('Invalid response from server');
+        }
+        
+        $status = (int)$obj->status;
+        if($status !== 200) {
+            throw new Exception($obj->error, $status);
+        }
         
         $this->setName($obj->name);
         $this->setPlayerCount($obj->playercount);
