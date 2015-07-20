@@ -51,7 +51,7 @@ class Game_TShock extends Gameserver {
         
         $players = array();
         foreach($obj->players as $player) {
-            $players[] = $player['nickname'];
+            $players[] = $player->nickname;
         }
         $this->setPlayerList($players);
     }
