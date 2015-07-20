@@ -68,7 +68,11 @@ class Game_Valve extends Gameserver {
         stream_set_timeout($fp, 5);
         
         $this->makeInfoRequest($fp);
-        $this->makePlayerRequest($fp);
+        try {
+            $this->makePlayerRequest($fp);
+        } catch(Exception $e) {
+            
+        }
     }
 
     /**
