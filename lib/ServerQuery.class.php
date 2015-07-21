@@ -34,6 +34,13 @@ require 'lib/Gameserver.class.php';
 class ServerQuery {
 
     /**
+     * Array of prepared Gameserver objects
+     *
+     * @var array
+     */
+    private $servers = array();
+
+    /**
      * Execute main application logic
      */
     public function exec() {
@@ -41,12 +48,21 @@ class ServerQuery {
             $o = self::getServerObject($server);
             try {
                 $o->query();
-            } catch (Exception $e) {
+            } catch(Exception $e) {
                 echo 'Error: ' . $e->getMessage() . PHP_EOL;
             }
             
-            var_dump($o);
+            $this->servers[] = $o;
         }
+    }
+
+    /**
+     * Get the list of Gameserver objects
+     * 
+     * @return array
+     */
+    public function getServers() {
+        return $this->servers;
     }
 
     /**
