@@ -26,30 +26,10 @@
 
 include 'config.php';
 include 'testconfig.php';
-include 'lib/Gameserver.class.php';
+include 'lib/ServerQuery.class.php';
 
 header('Content-Type: text/plain; charset=UTF-8');
 
-foreach(SQConfig::$servers as $server) {
-    $className = SQConfig::$games[$server['game']]['class'];
-    if(!class_exists($className)) {
-        $fileName = 'games/';
-        $fileName .= substr($className, strrpos($className, '_') + 1);
-        $fileName .= '.class.php';
-        require $fileName;
-    }
-    
-    $config = array_key_exists('config', $server) ? $server['config'] : array();
-    if(array_key_exists('config', SQConfig::$games[$server['game']])) {
-        $config = array_merge(SQConfig::$games[$server['game']]['config'], $config);
-    }
-    
-    $o = new $className($server['addr'], $config);
-    try {
-        $o->query();
-    } catch (Exception $e) {
-        echo 'Error: ' . $e->getMessage() . PHP_EOL;
-    }
-    
-    var_dump($o);
-}
+$sq = new ServerQuery();
+$sq->exec();
+var_dump($sq);
