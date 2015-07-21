@@ -46,10 +46,22 @@ class ServerQuery {
     public function exec() {
         foreach(SQConfig::$servers as $server) {
             $o = self::getServerObject($server);
+            if(SQConfig::CACHE_ENABLE) {
+                $cached = $this->getFromCache($o);
+                if($cached) {
+                    $this->servers[] = $cached;
+                    continue;
+                }
+            }
+            
             try {
                 $o->query();
             } catch(Exception $e) {
                 echo 'Error: ' . $e->getMessage() . PHP_EOL;
+            }
+            
+            if(SQConfig::CACHE_ENABLE) {
+                $this->updateCache($o);
             }
             
             $this->servers[] = $o;
@@ -63,6 +75,52 @@ class ServerQuery {
      */
     public function getServers() {
         return $this->servers;
+    }
+
+    /**
+     * Retrieve a Gameserver object from the cache
+     * 
+     * @param Gameserver $server
+     * @return boolean|Gameserver Boolean false if object is not found or expired
+     */
+    private function getFromCache(Gameserver $server) {
+        $fileName = self::getCacheFileName($server);
+        
+        if(!file_exists($fileName)) {
+            return false;
+        }
+        
+        if(time() - filemtime($fileName) > SQConfig::CACHE_TIME) {
+            return false;
+        }
+        
+        $data = file_get_contents($fileName);
+        return unserialize($data);
+    }
+
+    /**
+     * Store a Gameserver object in the cache
+     * 
+     * @param Gameserver $server
+     */
+    private function updateCache(Gameserver $server) {
+        $fileName = self::getCacheFileName($server);
+        
+        $data = serialize($server);
+        file_put_contents($fileName, $data);
+    }
+
+    /**
+     * Get the name of a cache file based on a Gameserver object
+     * 
+     * @param Gameserver $server
+     * @return string
+     */
+    private static function getCacheFileName(Gameserver $server) {
+        $fileName = str_replace(':', '_', $server->getAddress());
+        $fileName = 'cache/' . $fileName . '.dat';
+        
+        return $fileName;
     }
 
     /**

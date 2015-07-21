@@ -25,6 +25,10 @@
  */
 
 class SQConfig {
+
+    const CACHE_ENABLE = true;
+    const CACHE_TIME = 5;
+
     public static $games = array(
         'tf2' => array(
             'name'  => 'Team Fortress 2',
