@@ -130,6 +130,15 @@ abstract class Gameserver {
     }
 
     /**
+     * Get the current configuration for this instance
+     * 
+     * @return array
+     */
+    public function getConfig() {
+        return $this->config;
+    }
+
+    /**
      * Set the configuration for this instance
      * 
      * @param array $config
