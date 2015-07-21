@@ -119,7 +119,7 @@ abstract class Gameserver {
      * 
      * @param string $addr Format: "hostname" or "hostname:port"
      */
-    protected function setAddress($addr) {
+    public function setAddress($addr) {
         if(strpos(':', $addr) !== false) {
             $parts = explode(':', $addr);
             $this->hostname = $parts[0];
@@ -134,7 +134,7 @@ abstract class Gameserver {
      * 
      * @param array $config
      */
-    protected function setConfig(array $config) {
+    public function setConfig(array $config) {
         $this->config = array_merge($this->defaultConfig, $config);
     }
 
@@ -161,7 +161,7 @@ abstract class Gameserver {
      * 
      * @param string $name
      */
-    protected function setName($name) {
+    public function setName($name) {
         $this->name = $name;
     }
 
@@ -179,7 +179,7 @@ abstract class Gameserver {
      * 
      * @param string $mapName
      */
-    protected function setMapName($mapName) {
+    public function setMapName($mapName) {
         $this->mapName = $mapName;
     }
 
@@ -197,7 +197,7 @@ abstract class Gameserver {
      * 
      * @param int $count
      */
-    protected function setPlayerCount($count) {
+    public function setPlayerCount($count) {
         if(!is_int($count)) {
             throw new InvalidArgumentException;
         }
@@ -219,7 +219,7 @@ abstract class Gameserver {
      * @param int $maxPlayers
      * @throws InvalidArgumentException
      */
-    protected function setMaxPlayers($maxPlayers) {
+    public function setMaxPlayers($maxPlayers) {
         if(!is_int($maxPlayers)) {
             throw new InvalidArgumentException;
         }
@@ -240,7 +240,7 @@ abstract class Gameserver {
      * 
      * @param array $playerList
      */
-    protected function setPlayerList(array $playerList) {
+    public function setPlayerList(array $playerList) {
         $this->playerList = $playerList;
     }
 

@@ -46,7 +46,7 @@ class Game_Valve extends Gameserver {
         return 'steam://connect/' . $this->getAddress();
     }
 
-    protected function setPlayerList(array $playerList) {
+    public function setPlayerList(array $playerList) {
         $filteredList = array();
         foreach($playerList as $player) {
             if($player === '') {

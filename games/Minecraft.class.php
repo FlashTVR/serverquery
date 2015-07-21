@@ -38,7 +38,7 @@ class Game_Minecraft extends Gameserver {
 
     protected $port = 25565;
 
-    protected function setName($name) {
+    public function setName($name) {
         // strip color and formatting codes
         $name = preg_replace('/\xA7./', '', $name);
         parent::setName($name);
