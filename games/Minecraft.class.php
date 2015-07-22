@@ -80,7 +80,7 @@ class Game_Minecraft extends Gameserver {
      * @return string
      */
     protected function getQueryAddress() {
-        return $this->hostname . ':' . $this->config['queryPort'];
+        return $this->getHostname() . ':' . $this->config['queryPort'];
     }
 
     /**
