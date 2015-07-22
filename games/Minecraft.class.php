@@ -163,7 +163,7 @@ class Game_Minecraft extends Gameserver {
     /**
      * Set relevant properties from the key values
      *
-     * @param array $info Associative array of server properties
+     * @param string[] $info Associative array of server properties
      */
     private function setServerInfo(array $info) {
         $this->setName($info['hostname']);

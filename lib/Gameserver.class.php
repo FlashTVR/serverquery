@@ -34,14 +34,14 @@ abstract class Gameserver {
     /**
      * Miscellaneous configuration options
      *
-     * @var array
+     * @var mixed[]
      */
     protected $config = array();
 
     /**
      * Default configuration
      *
-     * @var array
+     * @var mixed[]
      */
     protected $defaultConfig = array();
 
@@ -90,7 +90,7 @@ abstract class Gameserver {
     /**
      * List of connected players
      *
-     * @var array
+     * @var string[]
      */
     protected $playerList = null;
 
@@ -98,7 +98,7 @@ abstract class Gameserver {
      * Constructor
      * 
      * @param string $addr Full server address
-     * @param array $config Optional array of options for this instance
+     * @param mixed[] $config Optional array of options for this instance
      */
     public function __construct($addr, array $config = array()) {
         $this->setAddress($addr);
@@ -132,7 +132,7 @@ abstract class Gameserver {
     /**
      * Get the current configuration for this instance
      * 
-     * @return array
+     * @return mixed[]
      */
     public function getConfig() {
         return $this->config;
@@ -141,7 +141,7 @@ abstract class Gameserver {
     /**
      * Set the configuration for this instance
      * 
-     * @param array $config
+     * @param mixed[] $config
      */
     public function setConfig(array $config) {
         $this->config = array_merge($this->defaultConfig, $config);
@@ -150,7 +150,7 @@ abstract class Gameserver {
     /**
      * Get link to connect directly to the server
      * 
-     * @return string NULL if unsupported
+     * @return string|null NULL if unsupported
      */
     public function getConnectLink() {
         return null;
@@ -159,7 +159,7 @@ abstract class Gameserver {
     /**
      * Get server name
      * 
-     * @return string NULL if unsupported
+     * @return string|null NULL if unsupported
      */
     public function getName() {
         return $this->name;
@@ -177,7 +177,7 @@ abstract class Gameserver {
     /**
      * Get name of map currently running
      * 
-     * @return string NULL if unsupported
+     * @return string|null NULL if unsupported
      */
     public function getMapName() {
         return $this->mapName;
@@ -205,6 +205,7 @@ abstract class Gameserver {
      * Set current player count
      * 
      * @param int $count
+     * @throws InvalidArgumentException
      */
     public function setPlayerCount($count) {
         if(!is_int($count)) {
@@ -238,7 +239,7 @@ abstract class Gameserver {
     /**
      * Get list of players connected to the server
      * 
-     * @return array NULL if unsupported
+     * @return string[]|null NULL if unsupported
      */
     public function getPlayerList() {
         return $this->playerList;
@@ -247,7 +248,7 @@ abstract class Gameserver {
     /**
      * Set current list of players
      * 
-     * @param array $playerList
+     * @param string[] $playerList
      */
     public function setPlayerList(array $playerList) {
         $this->playerList = $playerList;

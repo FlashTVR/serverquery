@@ -36,17 +36,20 @@ class ServerQuery {
     /**
      * Use the cache to store server data
      *
-     * @var boolean
+     * @var bool
      */
     private $useCache = false;
 
     /**
      * Array of prepared Gameserver objects
      *
-     * @var array
+     * @var Gameserver[]
      */
     private $servers = array();
 
+    /**
+     * Constructor
+     */
     public function __construct() {
         if(SQConfig::CACHE_ENABLE) {
             $this->useCache = is_dir('cache') && is_writable('cache');
@@ -56,7 +59,7 @@ class ServerQuery {
     /**
      * Get the list of Gameserver objects
      * 
-     * @return array
+     * @return Gameserver[]
      */
     public function getServers() {
         return $this->servers;
@@ -74,7 +77,7 @@ class ServerQuery {
     /**
      * Get a Gameserver object based on a server config
      * 
-     * @param array $server Element from the servers config
+     * @param mixed[] $server Element from the servers config
      * @return Gameserver
      */
     private function getServerObject(array $server) {
@@ -102,7 +105,7 @@ class ServerQuery {
     /**
      * Initialize a Gameserver object based on a server config
      * 
-     * @param array $server Element from the servers config
+     * @param mixed[] $server Element from the servers config
      * @return Gameserver
      */
     private static function initServerObject(array $server) {
@@ -120,8 +123,8 @@ class ServerQuery {
     /**
      * Get the combined server config array
      * 
-     * @param array $server Element from the servers config
-     * @return array
+     * @param mixed[] $server Element from the servers config
+     * @return mixed[]
      */
     private static function getServerConfig(array $server) {
         $config = array_key_exists('config', $server) ? $server['config'] : array();
@@ -137,7 +140,7 @@ class ServerQuery {
      * Retrieve a Gameserver object from the cache
      * 
      * @param Gameserver $server
-     * @return boolean|Gameserver Boolean false if object is not found or expired
+     * @return Gameserver|false Boolean false if object is not found or expired
      */
     private function getFromCache(Gameserver $server) {
         $fileName = self::getCacheFileName($server);
