@@ -84,8 +84,11 @@ class ServerQuery {
         $gs = self::initServerObject($server);
         if($this->useCache) {
             $cached = self::getFromCache($gs);
-            if($cached && (time() - $cached->getQueryTime() < SQConfig::CACHE_TIME)) {
-                return $cached;
+            if($cached) {
+                $gs = $cached;
+            }
+            if(time() - $gs->getQueryTime() < SQConfig::CACHE_TIME) {
+                return $gs;
             }
         }
 
