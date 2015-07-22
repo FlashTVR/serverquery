@@ -58,26 +58,7 @@ class ServerQuery {
      */
     public function exec() {
         foreach(SQConfig::$servers as $server) {
-            $o = self::getServerObject($server);
-            if($this->useCache) {
-                $cached = $this->getFromCache($o);
-                if($cached) {
-                    $this->servers[] = $cached;
-                    continue;
-                }
-            }
-            
-            try {
-                $o->query();
-            } catch(Exception $e) {
-                echo 'Error: ' . $e->getMessage() . PHP_EOL;
-            }
-            
-            if($this->useCache) {
-                $this->updateCache($o);
-            }
-            
-            $this->servers[] = $o;
+            $this->servers[] = $this->getServerObject($server);
         }
     }
 
@@ -142,7 +123,35 @@ class ServerQuery {
      * @param array $server Element from the servers config
      * @return Gameserver
      */
-    private static function getServerObject(array $server) {
+    private function getServerObject(array $server) {
+        $gs = self::initServerObject($server);
+        if($this->useCache) {
+            $cached = self::getFromCache($gs);
+            if($cached) {
+                return $cached;
+            }
+        }
+
+        try {
+            $gs->query();
+        } catch(Exception $e) {
+            echo 'Error: ' . $e->getMessage() . PHP_EOL;
+        }
+
+        if($this->useCache) {
+            $this->updateCache($gs);
+        }
+        
+        return $gs;
+    }
+
+    /**
+     * Initialize a Gameserver object based on a server config
+     * 
+     * @param array $server Element from the servers config
+     * @return Gameserver
+     */
+    private static function initServerObject(array $server) {
         $className = SQConfig::$games[$server['game']]['class'];
         if(!class_exists($className)) {
             $fileName = 'games/';
