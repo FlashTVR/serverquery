@@ -243,9 +243,9 @@ class Game_Minecraft extends Gameserver {
     protected function makeLegacyRequest($fp) {
         $req = pack('nc', 0xFE01, 0xFA);
         $req .= self::packUTF16BEString('MC|PingHost');
-        $req .= pack('nc', 7 + 2 * strlen($this->hostname), 73);
-        $req .= self::packUTF16BEString($this->hostname);
-        $req .= pack('N', $this->port);
+        $req .= pack('nc', 7 + 2 * strlen($this->getHostname()), 73);
+        $req .= self::packUTF16BEString($this->getHostname());
+        $req .= pack('N', $this->getPort());
 
         fwrite($fp, $req);
     }
