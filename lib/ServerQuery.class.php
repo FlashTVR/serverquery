@@ -66,6 +66,53 @@ class ServerQuery {
     }
 
     /**
+     * Get array of output data to use in the template
+     * 
+     * @return mixed[]
+     */
+    public function getTemplateData() {
+        $servers = array();
+        foreach($this->servers as $key => $gs) {
+            $server = new stdClass();
+            $server->online = $gs->isOnline();
+            $server->error = $gs->getError();
+
+            $gameId = SQConfig::$servers[$key]['game'];
+            $server->gameId = $gameId;
+            $server->gameName = htmlspecialchars(SQConfig::$games[$gameId]['name']);
+            $server->gameIcon = self::getGameImageURL($gameId);
+
+            $server->addr = $gs->getAddress();
+            $server->link = $gs->getConnectLink();
+            $server->name = htmlspecialchars($gs->getName());
+            $server->map = htmlentities($gs->getMapName());
+            $server->playerCount = $gs->getPlayerCount();
+            $server->maxPlayers = $gs->getMaxPlayers();
+
+            $server->players = $gs->getPlayerList();
+            if($server->players !== null) {
+                array_walk($server->players, 'htmlspecialchars');
+            }
+
+            $servers[] = $server;
+        }
+
+        return array(
+            'servers' => $servers,
+        );
+    }
+
+    /**
+     * Template helper to get the URL to a game icon
+     * 
+     * @param string $gameId Key from SQConfig::$games
+     * @return string
+     */
+    public static function getGameImageURL($gameId) {
+        return 'img/games/' . $gameId . '.png';
+    }
+
+    /**
      * Execute main application logic
      */
     public function exec() {

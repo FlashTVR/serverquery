@@ -28,8 +28,13 @@ include 'config.php';
 include 'testconfig.php';
 include 'lib/ServerQuery.class.php';
 
-header('Content-Type: text/plain; charset=UTF-8');
+//header('Content-Type: text/plain; charset=UTF-8');
 
 $sq = new ServerQuery();
 $sq->exec();
+echo '<pre>';
 var_dump($sq);
+echo '</pre>';
+
+$data = $sq->getTemplateData();
+require 'template.php';
