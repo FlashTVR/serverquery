@@ -34,11 +34,24 @@ require 'lib/Gameserver.class.php';
 class ServerQuery {
 
     /**
+     * Use the cache to store server data
+     *
+     * @var boolean
+     */
+    private $useCache = false;
+
+    /**
      * Array of prepared Gameserver objects
      *
      * @var array
      */
     private $servers = array();
+
+    public function __construct() {
+        if(SQConfig::CACHE_ENABLE) {
+            $this->useCache = is_dir('cache') && is_writable('cache');
+        }
+    }
 
     /**
      * Execute main application logic
@@ -46,7 +59,7 @@ class ServerQuery {
     public function exec() {
         foreach(SQConfig::$servers as $server) {
             $o = self::getServerObject($server);
-            if(SQConfig::CACHE_ENABLE) {
+            if($this->useCache) {
                 $cached = $this->getFromCache($o);
                 if($cached) {
                     $this->servers[] = $cached;
@@ -60,7 +73,7 @@ class ServerQuery {
                 echo 'Error: ' . $e->getMessage() . PHP_EOL;
             }
             
-            if(SQConfig::CACHE_ENABLE) {
+            if($this->useCache) {
                 $this->updateCache($o);
             }
             
