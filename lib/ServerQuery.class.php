@@ -54,15 +54,6 @@ class ServerQuery {
     }
 
     /**
-     * Execute main application logic
-     */
-    public function exec() {
-        foreach(SQConfig::$servers as $server) {
-            $this->servers[] = $this->getServerObject($server);
-        }
-    }
-
-    /**
      * Get the list of Gameserver objects
      * 
      * @return array
@@ -72,49 +63,12 @@ class ServerQuery {
     }
 
     /**
-     * Retrieve a Gameserver object from the cache
-     * 
-     * @param Gameserver $server
-     * @return boolean|Gameserver Boolean false if object is not found or expired
+     * Execute main application logic
      */
-    private function getFromCache(Gameserver $server) {
-        $fileName = self::getCacheFileName($server);
-        
-        if(!file_exists($fileName)) {
-            return false;
+    public function exec() {
+        foreach(SQConfig::$servers as $server) {
+            $this->servers[] = $this->getServerObject($server);
         }
-        
-        if(time() - filemtime($fileName) > SQConfig::CACHE_TIME) {
-            return false;
-        }
-        
-        $data = file_get_contents($fileName);
-        return unserialize($data);
-    }
-
-    /**
-     * Store a Gameserver object in the cache
-     * 
-     * @param Gameserver $server
-     */
-    private function updateCache(Gameserver $server) {
-        $fileName = self::getCacheFileName($server);
-        
-        $data = serialize($server);
-        file_put_contents($fileName, $data);
-    }
-
-    /**
-     * Get the name of a cache file based on a Gameserver object
-     * 
-     * @param Gameserver $server
-     * @return string
-     */
-    private static function getCacheFileName(Gameserver $server) {
-        $fileName = str_replace(':', '_', $server->getAddress());
-        $fileName = 'cache/' . $fileName . '.dat';
-        
-        return $fileName;
     }
 
     /**
@@ -177,5 +131,51 @@ class ServerQuery {
         }
         
         return $config;
+    }
+
+    /**
+     * Retrieve a Gameserver object from the cache
+     * 
+     * @param Gameserver $server
+     * @return boolean|Gameserver Boolean false if object is not found or expired
+     */
+    private function getFromCache(Gameserver $server) {
+        $fileName = self::getCacheFileName($server);
+        
+        if(!file_exists($fileName)) {
+            return false;
+        }
+        
+        if(time() - filemtime($fileName) > SQConfig::CACHE_TIME) {
+            return false;
+        }
+        
+        $data = file_get_contents($fileName);
+        return unserialize($data);
+    }
+
+    /**
+     * Store a Gameserver object in the cache
+     * 
+     * @param Gameserver $server
+     */
+    private function updateCache(Gameserver $server) {
+        $fileName = self::getCacheFileName($server);
+        
+        $data = serialize($server);
+        file_put_contents($fileName, $data);
+    }
+
+    /**
+     * Get the name of a cache file based on a Gameserver object
+     * 
+     * @param Gameserver $server
+     * @return string
+     */
+    private static function getCacheFileName(Gameserver $server) {
+        $fileName = str_replace(':', '_', $server->getAddress());
+        $fileName = 'cache/' . $fileName . '.dat';
+        
+        return $fileName;
     }
 }
