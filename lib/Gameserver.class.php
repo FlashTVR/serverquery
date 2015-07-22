@@ -95,6 +95,27 @@ abstract class Gameserver {
     private $playerList = null;
 
     /**
+     * Unix timestamp of the last update
+     *
+     * @var int
+     */
+    private $queryTime = 0;
+
+    /**
+     * Error message thrown from the query method
+     *
+     * @var string|null
+     */
+    private $error = null;
+
+    /**
+     * Server responded to the query
+     *
+     * @var bool
+     */
+    private $online = false;
+
+    /**
      * Constructor
      * 
      * @param string $addr Full server address
@@ -273,14 +294,53 @@ abstract class Gameserver {
     }
 
     /**
+     * The server is online
+     * 
+     * @return bool
+     */
+    public final function isOnline() {
+        return $this->online;
+    }
+
+    /**
+     * Unix timestamp of the last update
+     * 
+     * @return int
+     */
+    public final function getQueryTime() {
+        return $this->queryTime;
+    }
+
+    /**
+     * Get the last query error
+     * 
+     * @return string|null
+     */
+    public final function getError() {
+        return $this->error;
+    }
+
+    /**
      * Update the server details
      */
     public final function update() {
-        $this->query();
+        $this->error = null;
+        $this->online = false;
+
+        try {
+            $this->query();
+            $this->online = true;
+        } catch(Exception $e) {
+            $this->error = $e->getMessage();
+        }
+
+        $this->queryTime = time();
     }
 
     /**
      * Query the server for stats over the network
+     * 
+     * @throws Exception
      */
     protected abstract function query();
 }
