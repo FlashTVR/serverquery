@@ -95,7 +95,7 @@ class ServerQuery {
         if($this->useCache) {
             $this->updateCache($gs);
         }
-        
+
         return $gs;
     }
 
@@ -125,11 +125,11 @@ class ServerQuery {
      */
     private static function getServerConfig(array $server) {
         $config = array_key_exists('config', $server) ? $server['config'] : array();
-        
+
         if(array_key_exists('config', SQConfig::$games[$server['game']])) {
             $config = array_merge(SQConfig::$games[$server['game']]['config'], $config);
         }
-        
+
         return $config;
     }
 
@@ -141,15 +141,15 @@ class ServerQuery {
      */
     private function getFromCache(Gameserver $server) {
         $fileName = self::getCacheFileName($server);
-        
+
         if(!file_exists($fileName)) {
             return false;
         }
-        
+
         if(time() - filemtime($fileName) > SQConfig::CACHE_TIME) {
             return false;
         }
-        
+
         $data = file_get_contents($fileName);
         return unserialize($data);
     }
@@ -161,7 +161,7 @@ class ServerQuery {
      */
     private function updateCache(Gameserver $server) {
         $fileName = self::getCacheFileName($server);
-        
+
         $data = serialize($server);
         file_put_contents($fileName, $data);
     }
@@ -175,7 +175,8 @@ class ServerQuery {
     private static function getCacheFileName(Gameserver $server) {
         $fileName = str_replace(':', '_', $server->getAddress());
         $fileName = 'cache/' . $fileName . '.dat';
-        
+
         return $fileName;
     }
+
 }

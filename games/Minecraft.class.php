@@ -35,7 +35,6 @@ class Game_Minecraft extends Gameserver {
         'queryPort' => 25565,
         'useLegacy' => false,
     );
-
     protected $port = 25565;
 
     public function setName($name) {
@@ -270,4 +269,5 @@ class Game_Minecraft extends Gameserver {
         $this->setPlayerCount((int)self::decodeUTF16BEString($data[4]));
         $this->setMaxPlayers((int)self::decodeUTF16BEString($data[5]));
     }
+
 }

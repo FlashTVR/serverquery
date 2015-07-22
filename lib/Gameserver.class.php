@@ -123,7 +123,7 @@ abstract class Gameserver {
         if(strpos(':', $addr) !== false) {
             $parts = explode(':', $addr);
             $this->hostname = $parts[0];
-            $this->port = (int) $parts[1];
+            $this->port = (int)$parts[1];
         } else {
             $this->hostname = $addr;
         }

@@ -30,6 +30,7 @@
  * @author Steve Guidetti
  */
 class ValveBuffer {
+
     private $buffer = '';
     private $length = 0;
     private $position = 0;
@@ -108,4 +109,5 @@ class ValveBuffer {
             return $string;
         }
     }
+
 }

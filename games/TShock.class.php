@@ -34,7 +34,6 @@ class Game_TShock extends Gameserver {
     protected $defaultConfig = array(
         'queryPort' => 7878,
     );
-
     protected $port = 7777;
 
     public function query() {
@@ -42,21 +41,21 @@ class Game_TShock extends Gameserver {
         if(!$res) {
             throw new Exception('REST request failed');
         }
-        
+
         $obj = json_decode($res);
         if(!$obj) {
             throw new Exception('Invalid response from server');
         }
-        
+
         $status = (int)$obj->status;
         if($status !== 200) {
             throw new Exception($obj->error, $status);
         }
-        
+
         $this->setName($obj->name);
         $this->setPlayerCount($obj->playercount);
         $this->setMaxPlayers($obj->maxplayers);
-        
+
         $players = array();
         foreach($obj->players as $player) {
             $players[] = $player->nickname;
@@ -73,4 +72,5 @@ class Game_TShock extends Gameserver {
     protected function getRestURL($endpoint) {
         return 'http://' . $this->hostname . ':' . $this->config['queryPort'] . $endpoint;
     }
+
 }

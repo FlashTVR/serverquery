@@ -52,10 +52,10 @@ class Game_Valve extends Gameserver {
             if($player === '') {
                 continue;
             }
-            
+
             $filteredList[] = $player;
         }
-        
+
         parent::setPlayerList($filteredList);
     }
 
@@ -64,9 +64,9 @@ class Game_Valve extends Gameserver {
         if(!$fp) {
             throw new Exception($errstr, $errno);
         }
-        
+
         stream_set_timeout($fp, 5);
-        
+
         $this->makeInfoRequest($fp);
         try {
             $this->makePlayerRequest($fp);
@@ -84,13 +84,13 @@ class Game_Valve extends Gameserver {
     protected function makeInfoRequest($fp) {
         $req = pack('ccccca*', 0xFF, 0xFF, 0xFF, 0xFF, 0x54, "Source Engine Query\0");
         fwrite($fp, $req);
-        
+
         $res = self::assembleResponse($fp);
-        
+
         if($res->getByte() !== 0x49) {
             throw new Exception('Invalid info response');
         }
-        
+
         $res->getByte(); // protocol version
         $this->setName($res->getString());
         $this->setMapName($res->getString());
@@ -109,16 +109,16 @@ class Game_Valve extends Gameserver {
      */
     protected function makePlayerRequest($fp) {
         $challenge = self::getChallengeNumber($fp);
-        
+
         $req = pack('cccccl', 0xFF, 0xFF, 0xFF, 0xFF, 0x55, $challenge);
         fwrite($fp, $req);
-        
+
         $res = self::assembleResponse($fp);
-        
+
         if($res->getByte() !== 0x44) {
             throw new Exception('Invalid player response');
         }
-        
+
         $playerCount = $res->getByte();
         $players = array();
         while(count($players) < $playerCount) {
@@ -144,7 +144,7 @@ class Game_Valve extends Gameserver {
     protected static function getChallengeNumber($fp) {
         $req = pack('cccccl', 0xFF, 0xFF, 0xFF, 0xFF, 0x55, -1);
         fwrite($fp, $req);
-        
+
         $res = self::assembleResponse($fp);
         if($res->getByte() !== 0x41) {
             throw new Exception('Bad challenge response');
@@ -161,17 +161,18 @@ class Game_Valve extends Gameserver {
      */
     protected static function assembleResponse($fp) {
         $buffer = new ValveBuffer();
-        
+
         $buffer->set(fread($fp, 1400));
-        
+
         if($buffer->remaining() < 4) {
             throw new Exception('Invalid response from server');
         }
-        
+
         if($buffer->getLong() == -1) {
             return $buffer;
         } else {
             throw new Exception('Multipart responses are not yet implemented');
         }
     }
+
 }
