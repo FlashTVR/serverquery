@@ -52,3 +52,26 @@ table.serverquery {
 .serverquery .playercount {
     text-align: right;
 }
+
+.serverquery .playerlist {
+    padding: 6px;
+}
+
+.serverquery .playerlist div {
+    height: 15px;
+    float: left;
+    background: url("img/mid_slot.png") repeat-x;
+}
+
+.serverquery .playerlist div.active {
+    background: url("img/mid_player.png") repeat-x;
+}
+
+.serverquery .playerlist div:first-child {
+    width: 6px;
+    background: url("img/first_slot.png") no-repeat;
+}
+
+.serverquery .playerlist div:first-child.active {
+    background: url("img/first_player.png") no-repeat;
+}
