@@ -41,11 +41,6 @@ class ValveBuffer {
         $this->position = 0;
     }
 
-    public function reset() {
-        $this->buffer = '';
-        $this->length = $this->position = 0;
-    }
-
     public function setPosition($pos) {
         if(is_int($pos)) {
             $this->position = $pos;
