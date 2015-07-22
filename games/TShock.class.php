@@ -36,7 +36,7 @@ class Game_TShock extends Gameserver {
     );
     protected $port = 7777;
 
-    public function query() {
+    protected function query() {
         $res = @file_get_contents($this->getRestURL('/v2/server/status?players=true'));
         if(!$res) {
             throw new Exception('REST request failed');

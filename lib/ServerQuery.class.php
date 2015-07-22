@@ -90,7 +90,7 @@ class ServerQuery {
         }
 
         try {
-            $gs->query();
+            $gs->update();
         } catch(Exception $e) {
             echo 'Error: ' . $e->getMessage() . PHP_EOL;
         }

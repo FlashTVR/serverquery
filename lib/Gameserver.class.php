@@ -273,7 +273,14 @@ abstract class Gameserver {
     }
 
     /**
+     * Update the server details
+     */
+    public final function update() {
+        $this->query();
+    }
+
+    /**
      * Query the server for stats over the network
      */
-    public abstract function query();
+    protected abstract function query();
 }

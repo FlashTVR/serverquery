@@ -59,7 +59,7 @@ class Game_Valve extends Gameserver {
         parent::setPlayerList($filteredList);
     }
 
-    public function query() {
+    protected function query() {
         $fp = @stream_socket_client('udp://' . $this->getAddress(), $errno, $errstr);
         if(!$fp) {
             throw new Exception($errstr, $errno);

@@ -43,7 +43,7 @@ class Game_Minecraft extends Gameserver {
         parent::setName($name);
     }
 
-    public function query() {
+    protected function query() {
         if($this->config['useLegacy']) {
             $this->queryLagacy();
         } else {
