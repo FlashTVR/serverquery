@@ -141,7 +141,7 @@ abstract class Gameserver {
      * @param string $addr Format: "hostname" or "hostname:port"
      */
     public function setAddress($addr) {
-        if(strpos(':', $addr) !== false) {
+        if(strpos($addr, ':') !== false) {
             $parts = explode(':', $addr);
             $this->hostname = $parts[0];
             $this->port = (int)$parts[1];
