@@ -84,16 +84,12 @@ class ServerQuery {
         $gs = self::initServerObject($server);
         if($this->useCache) {
             $cached = self::getFromCache($gs);
-            if($cached) {
+            if($cached && (time() - $cached->getQueryTime() < SQConfig::CACHE_TIME)) {
                 return $cached;
             }
         }
 
-        try {
-            $gs->update();
-        } catch(Exception $e) {
-            echo 'Error: ' . $e->getMessage() . PHP_EOL;
-        }
+        $gs->update();
 
         if($this->useCache) {
             $this->updateCache($gs);
@@ -140,16 +136,12 @@ class ServerQuery {
      * Retrieve a Gameserver object from the cache
      * 
      * @param Gameserver $server
-     * @return Gameserver|false Boolean false if object is not found or expired
+     * @return Gameserver|false Boolean false if object is not found
      */
-    private function getFromCache(Gameserver $server) {
+    private static function getFromCache(Gameserver $server) {
         $fileName = self::getCacheFileName($server);
 
         if(!file_exists($fileName)) {
-            return false;
-        }
-
-        if(time() - filemtime($fileName) > SQConfig::CACHE_TIME) {
             return false;
         }
 
@@ -162,7 +154,7 @@ class ServerQuery {
      * 
      * @param Gameserver $server
      */
-    private function updateCache(Gameserver $server) {
+    private static function updateCache(Gameserver $server) {
         $fileName = self::getCacheFileName($server);
 
         $data = serialize($server);
