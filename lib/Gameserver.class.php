@@ -50,7 +50,7 @@ abstract class Gameserver {
      *
      * @var string
      */
-    private $hostname = null;
+    private $hostname;
 
     /**
      * Server port
@@ -62,14 +62,14 @@ abstract class Gameserver {
     /**
      * Server name
      *
-     * @var string
+     * @var string|null
      */
     private $name = null;
 
     /**
      * Name of current map
      *
-     * @var string
+     * @var string|null
      */
     private $mapName = null;
 
@@ -90,7 +90,7 @@ abstract class Gameserver {
     /**
      * List of connected players
      *
-     * @var string[]
+     * @var string[]|null
      */
     private $playerList = null;
 
