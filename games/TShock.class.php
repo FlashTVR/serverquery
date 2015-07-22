@@ -70,7 +70,7 @@ class Game_TShock extends Gameserver {
      * @return string
      */
     protected function getRestURL($endpoint) {
-        return 'http://' . $this->hostname . ':' . $this->config['queryPort'] . $endpoint;
+        return 'http://' . $this->getHostname() . ':' . $this->config['queryPort'] . $endpoint;
     }
 
 }

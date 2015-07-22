@@ -50,7 +50,7 @@ abstract class Gameserver {
      *
      * @var string
      */
-    protected $hostname = null;
+    private $hostname = null;
 
     /**
      * Server port
@@ -64,35 +64,35 @@ abstract class Gameserver {
      *
      * @var string
      */
-    protected $name = null;
+    private $name = null;
 
     /**
      * Name of current map
      *
      * @var string
      */
-    protected $mapName = null;
+    private $mapName = null;
 
     /**
      * Number of players connected
      *
      * @var int
      */
-    protected $playerCount = 0;
+    private $playerCount = 0;
 
     /**
      * Maximum number of players allowed
      *
      * @var int
      */
-    protected $maxPlayers = 0;
+    private $maxPlayers = 0;
 
     /**
      * List of connected players
      *
      * @var string[]
      */
-    protected $playerList = null;
+    private $playerList = null;
 
     /**
      * Constructor
@@ -145,6 +145,24 @@ abstract class Gameserver {
      */
     public function setConfig(array $config) {
         $this->config = array_merge($this->defaultConfig, $config);
+    }
+
+    /**
+     * Get the server hostname
+     * 
+     * @return string
+     */
+    public function getHostname() {
+        return $this->hostname;
+    }
+
+    /**
+     * Get the server game port
+     * 
+     * @return int
+     */
+    public function getPort() {
+        return $this->port;
     }
 
     /**
