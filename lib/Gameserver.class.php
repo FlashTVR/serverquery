@@ -244,13 +244,9 @@ abstract class Gameserver {
      * Set current player count
      * 
      * @param int $count
-     * @throws InvalidArgumentException
      */
     public function setPlayerCount($count) {
-        if(!is_int($count)) {
-            throw new InvalidArgumentException;
-        }
-        $this->playerCount = $count;
+        $this->playerCount = (int)$count;
     }
 
     /**
@@ -266,13 +262,9 @@ abstract class Gameserver {
      * Set maximum number of players allowed
      * 
      * @param int $maxPlayers
-     * @throws InvalidArgumentException
      */
     public function setMaxPlayers($maxPlayers) {
-        if(!is_int($maxPlayers)) {
-            throw new InvalidArgumentException;
-        }
-        $this->maxPlayers = $maxPlayers;
+        $this->maxPlayers = (int)$maxPlayers;
     }
 
     /**
