@@ -28,6 +28,7 @@ class SQConfig {
 
     const CACHE_ENABLE = true;
     const CACHE_TIME = 5;
+    const WEB_PATH = 'serverquery/';
 
     public static $games = array(
         'tf2' => array(

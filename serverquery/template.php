@@ -25,7 +25,7 @@
  */
 
 ?>
-<link rel="stylesheet" href="serverquery.css" type="text/css">
+<link rel="stylesheet" href="<?php echo $data['stylesheet']; ?>" type="text/css">
 <table class="serverquery">
 <?php foreach($data['servers'] as $key => $s): ?>
 <?php if($s->online): ?>

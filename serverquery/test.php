@@ -24,17 +24,12 @@
  * THE SOFTWARE.
  */
 
-include 'config.php';
-include 'testconfig.php';
-include 'lib/ServerQuery.class.php';
+include __DIR__ . '/config.php';
+include __DIR__ . '/testconfig.php';
+include __DIR__ . '/lib/ServerQuery.class.php';
 
-//header('Content-Type: text/plain; charset=UTF-8');
+header('Content-Type: text/plain; charset=UTF-8');
 
 $sq = new ServerQuery();
 $sq->exec();
-echo '<pre>';
 var_dump($sq);
-echo '</pre>';
-
-$data = $sq->getTemplateData();
-require 'template.php';

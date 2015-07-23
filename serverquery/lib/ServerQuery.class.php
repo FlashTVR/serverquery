@@ -24,7 +24,7 @@
  * THE SOFTWARE.
  */
 
-require 'lib/Gameserver.class.php';
+require __DIR__ . '/Gameserver.class.php';
 
 /**
  * Main application class
@@ -99,6 +99,7 @@ class ServerQuery {
 
         return array(
             'servers' => $servers,
+            'stylesheet' => SQConfig::WEB_PATH . 'serverquery.css',
         );
     }
 
@@ -109,7 +110,7 @@ class ServerQuery {
      * @return string
      */
     public static function getGameImageURL($gameId) {
-        return 'img/games/' . $gameId . '.png';
+        return SQConfig::WEB_PATH . 'img/games/' . $gameId . '.png';
     }
 
     /**
@@ -157,7 +158,7 @@ class ServerQuery {
     private static function initServerObject(array $server) {
         $className = SQConfig::$games[$server['game']]['class'];
         if(!class_exists($className)) {
-            $fileName = 'games/';
+            $fileName = __DIR__ . '/../games/';
             $fileName .= substr($className, strrpos($className, '_') + 1);
             $fileName .= '.class.php';
             require $fileName;

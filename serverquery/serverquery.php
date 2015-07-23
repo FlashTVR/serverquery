@@ -24,8 +24,11 @@
  * THE SOFTWARE.
  */
 
-require 'config.php';
-require 'lib/ServerQuery.class.php';
+require __DIR__ . '/config.php';
+require __DIR__ . '/lib/ServerQuery.class.php';
 
 $sq = new ServerQuery();
 $sq->exec();
+
+$data = $sq->getTemplateData();
+require __DIR__ . '/template.php';
