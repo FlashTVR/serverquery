@@ -24,12 +24,38 @@
  * THE SOFTWARE.
  */
 
+/**
+ * Application configuration
+ *
+ * @author Steve Guidetti
+ */
 class SQConfig {
 
+    /**
+     * Enable caching of server response data
+     */
     const CACHE_ENABLE = true;
+
+    /**
+     * Time in seconds before cached items are considered stale
+     */
     const CACHE_TIME = 5;
+
+    /**
+     * URL path to the directory containing serverquery.css and img/
+     */
     const WEB_PATH = 'serverquery/';
 
+    /**
+     * Game configurations
+     *
+     * Format:
+     * array[gameId]['name'] string Name of the game
+     * array[gameId]['class'] string Name of the query class used by this game
+     * array[gameId]['config'] mixed[] Optional default configuration for this game
+     *
+     * @var mixed[]
+     */
     public static $games = array(
         'tf2' => array(
             'name'  => 'Team Fortress 2',
@@ -56,6 +82,16 @@ class SQConfig {
         ),
     );
 
+    /**
+     * Server configurations
+     *
+     * Format:
+     * array[]['game'] string A key from $games
+     * array[]['addr'] string Hostname for the server
+     * array[]['config'] mixed[] Optional configuration for this server
+     *
+     * @var mixed[]
+     */
     public static $servers = array(
         array(
             'game' => 'tf2',
