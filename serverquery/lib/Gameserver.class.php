@@ -32,6 +32,13 @@
 abstract class Gameserver {
 
     /**
+     * Key from the SQConfig::$games array
+     *
+     * @var string
+     */
+    private $gameId;
+
+    /**
      * Miscellaneous configuration options
      *
      * @var mixed[]
@@ -118,12 +125,23 @@ abstract class Gameserver {
     /**
      * Constructor
      * 
+     * @param string $gameId Key from the SQConfig::$games array
      * @param string $addr Full server address
      * @param mixed[] $config Optional array of options for this instance
      */
-    public function __construct($addr, array $config = array()) {
+    public function __construct($gameId, $addr, array $config = array()) {
+        $this->gameId = $gameId;
         $this->setAddress($addr);
         $this->setConfig($config);
+    }
+
+    /**
+     * Get the ID for the game currently running
+     * 
+     * @return string
+     */
+    public final function getGameId() {
+        return $this->gameId;
     }
 
     /**

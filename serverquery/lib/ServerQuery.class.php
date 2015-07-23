@@ -52,7 +52,8 @@ class ServerQuery {
      */
     public function __construct() {
         if(SQConfig::CACHE_ENABLE) {
-            $this->useCache = is_dir('cache') && is_writable('cache');
+            $dir = __DIR__ . '/../cache';
+            $this->useCache = is_dir($dir) && is_writable($dir);
         }
     }
 
@@ -164,7 +165,7 @@ class ServerQuery {
             require $fileName;
         }
 
-        return new $className($server['addr'], self::getServerConfig($server));
+        return new $className($server['game'], $server['addr'], self::getServerConfig($server));
     }
 
     /**
@@ -219,8 +220,10 @@ class ServerQuery {
      * @return string
      */
     private static function getCacheFileName(Gameserver $server) {
-        $fileName = str_replace(':', '_', $server->getAddress());
-        $fileName = 'cache/' . $fileName . '.dat';
+        $fileName = __DIR__ . '/../cache/';
+        $fileName .= $server->getGameId() . '_';
+        $fileName .= str_replace(':', '_', $server->getAddress());
+        $fileName .= '.dat';
 
         return $fileName;
     }
