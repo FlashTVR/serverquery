@@ -49,6 +49,13 @@
                 <div class="active"></div>
                 <div class="active" style="width: <?php echo $s->playerCount * 4 - 4; ?>px;"></div>
                 <div style="width: <?php echo ($s->maxPlayers - $s->playerCount) * 4; ?>px;"></div>
+<?php if($s->players): ?>
+                <ul>
+<?php foreach($s->players as $player): ?>
+                    <li><?php echo $player; ?></li>
+<?php endforeach; ?>
+                </ul>
+<?php endif; ?>
 <?php else: ?>
                 <div></div>
                 <div style="width: <?php echo $s->maxPlayers * 4 - 4; ?>px;"></div>

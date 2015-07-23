@@ -75,3 +75,16 @@ table.serverquery {
 .serverquery .playerlist div:first-child.active {
     background: url("img/first_player.png") no-repeat;
 }
+
+.playerlist div ul {
+    display: none;
+    position: absolute;
+    list-style: none;
+    padding: 6px;
+    background: #eee;
+    border: 2px solid #ccc;
+}
+
+.playerlist div:hover ul {
+    display: block;
+}
