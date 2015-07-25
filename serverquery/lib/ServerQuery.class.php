@@ -198,7 +198,13 @@ class ServerQuery {
         }
 
         $data = file_get_contents($fileName);
-        return unserialize($data);
+        $gs = unserialize($data);
+
+        if(!$gs || $gs->getConfig() !== $server->getConfig()) {
+            return false;
+        }
+
+        return $gs;
     }
 
     /**
