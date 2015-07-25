@@ -338,7 +338,8 @@ abstract class Gameserver {
         $this->online = false;
 
         try {
-            $this->query();
+            $timeout = (int)SQConfig::QUERY_TIMEOUT > 0 ? SQConfig::QUERY_TIMEOUT : 1;
+            $this->query($timeout);
             $this->online = true;
         } catch(Exception $e) {
             $this->error = $e->getMessage();
@@ -350,7 +351,8 @@ abstract class Gameserver {
     /**
      * Query the server for stats over the network
      * 
+     * @param int $timeout Socket timeout in seconds
      * @throws Exception
      */
-    protected abstract function query();
+    protected abstract function query($timeout);
 }

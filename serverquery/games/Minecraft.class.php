@@ -43,26 +43,27 @@ class Game_Minecraft extends Gameserver {
         parent::setName($name);
     }
 
-    protected function query() {
+    protected function query($timeout) {
         if($this->config['useLegacy']) {
-            $this->queryLagacy();
+            $this->queryLagacy($timeout);
         } else {
-            $this->queryQuery();
+            $this->queryQuery($timeout);
         }
     }
 
     /**
      * Query the server using the Query protocol
      * 
+     * @param int $timeout Socket timeout in seconds
      * @throws Exception
      */
-    protected function queryQuery() {
-        $fp = @stream_socket_client('udp://' . $this->getQueryAddress(), $errno, $errstr);
+    protected function queryQuery($timeout) {
+        $fp = @stream_socket_client('udp://' . $this->getQueryAddress(), $errno, $errstr, $timeout);
         if(!$fp) {
             throw new Exception($errstr, $errno);
         }
 
-        stream_set_timeout($fp, 5);
+        stream_set_timeout($fp, $timeout);
 
         $sessId = rand() & 0x0F0F0F0F;
 
@@ -200,15 +201,16 @@ class Game_Minecraft extends Gameserver {
     /**
      * Query the server using the old Server List Ping request
      * 
+     * @param int $timeout Socket timeout in seconds
      * @throws Exception
      */
-    protected function queryLagacy() {
-        $fp = @stream_socket_client('tcp://' . $this->getAddress(), $errno, $errstr);
+    protected function queryLagacy($timeout) {
+        $fp = @stream_socket_client('tcp://' . $this->getAddress(), $errno, $errstr, $timeout);
         if(!$fp) {
             throw new Exception($errstr, $errno);
         }
 
-        stream_set_timeout($fp, 5);
+        stream_set_timeout($fp, $timeout);
 
         $this->makeLegacyRequest($fp);
         $this->readLegacyResponse($fp);

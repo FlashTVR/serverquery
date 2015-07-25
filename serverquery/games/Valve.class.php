@@ -56,13 +56,13 @@ class Game_Valve extends Gameserver {
         return 'steam://connect/' . $this->getAddress();
     }
 
-    protected function query() {
-        $fp = @stream_socket_client('udp://' . $this->getAddress(), $errno, $errstr);
+    protected function query($timeout) {
+        $fp = @stream_socket_client('udp://' . $this->getAddress(), $errno, $errstr, $timeout);
         if(!$fp) {
             throw new Exception($errstr, $errno);
         }
 
-        stream_set_timeout($fp, 5);
+        stream_set_timeout($fp, $timeout);
 
         $this->makeInfoRequest($fp);
         try {

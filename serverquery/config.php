@@ -59,6 +59,11 @@ class SQConfig {
     const CRON_MODE = true;
 
     /**
+     * Maximum time in seconds to wait for servers to respond
+     */
+    const QUERY_TIMEOUT = 2;
+
+    /**
      * Game configurations
      *
      * Format:
