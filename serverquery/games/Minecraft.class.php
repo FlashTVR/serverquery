@@ -67,12 +67,19 @@ class Game_Minecraft extends Gameserver {
 
         $sessId = rand() & 0x0F0F0F0F;
 
-        $token = $this->performHandshake($fp, $sessId);
-        $this->requestStat($fp, $sessId, $token);
-        fread($fp, 11);
-        $this->parseKeyValues($fp);
-        fread($fp, 10);
-        $this->parsePlayers($fp);
+        try {
+            $token = $this->performHandshake($fp, $sessId);
+            $this->requestStat($fp, $sessId, $token);
+            fread($fp, 11);
+            $this->parseKeyValues($fp);
+            fread($fp, 10);
+            $this->parsePlayers($fp);
+        } catch(Exception $e) {
+            fclose($fp);
+            throw $e;
+        }
+
+        fclose($fp);
     }
 
     /**
@@ -212,8 +219,15 @@ class Game_Minecraft extends Gameserver {
 
         stream_set_timeout($fp, $timeout);
 
-        $this->makeLegacyRequest($fp);
-        $this->readLegacyResponse($fp);
+        try {
+            $this->makeLegacyRequest($fp);
+            $this->readLegacyResponse($fp);
+        } catch(Exception $e) {
+            fclose($fp);
+            throw $e;
+        }
+
+        fclose($fp);
     }
 
     /**
