@@ -33,6 +33,9 @@ require __DIR__ . '/../lib/ValveBuffer.class.php';
  */
 class Game_Valve extends Gameserver {
 
+    protected $defaultConfig = array(
+        'hideBots' => true,
+    );
     protected $port = 27015;
 
     /**
@@ -42,21 +45,15 @@ class Game_Valve extends Gameserver {
      */
     protected $appId = -1;
 
+    /**
+     * Number of bots on the server
+     *
+     * @var int
+     */
+    protected $numBots = 0;
+
     public function getConnectLink() {
         return 'steam://connect/' . $this->getAddress();
-    }
-
-    public function setPlayerList(array $playerList) {
-        $filteredList = array();
-        foreach($playerList as $player) {
-            if($player === '') {
-                continue;
-            }
-
-            $filteredList[] = $player;
-        }
-
-        parent::setPlayerList($filteredList);
     }
 
     protected function query() {
@@ -99,6 +96,30 @@ class Game_Valve extends Gameserver {
         $this->appId = $res->getShort();
         $this->setPlayerCount($res->getByte());
         $this->setMaxPlayers($res->getByte());
+        $this->numBots = $res->getByte();
+
+        if($this->config['hideBots']) {
+            $this->setPlayerCount($this->getPlayerCount() - $this->numBots);
+            $this->setMaxPlayers($this->getMaxPlayers() - $this->numBots);
+        }
+    }
+
+    /**
+     * Request a challenge number needed to make player request
+     * 
+     * @param resource $fp Handle to an open socket
+     * @return int Challenge number
+     * @throws Exception
+     */
+    protected static function getChallengeNumber($fp) {
+        $req = pack('cccccl', 0xFF, 0xFF, 0xFF, 0xFF, 0x55, -1);
+        fwrite($fp, $req);
+
+        $res = self::assembleResponse($fp);
+        if($res->getByte() !== 0x41) {
+            throw new Exception('Bad challenge response');
+        }
+        return $res->getLong();
     }
 
     /**
@@ -119,37 +140,79 @@ class Game_Valve extends Gameserver {
             throw new Exception('Invalid player response');
         }
 
+        $this->readPlayerResponse($res);
+    }
+
+    /**
+     * Read the response to the player list request
+     * 
+     * @param ValveBuffer $res
+     */
+    protected function readPlayerResponse(ValveBuffer $res) {
         $playerCount = $res->getByte();
         $players = array();
         while(count($players) < $playerCount) {
+            $player = array();
+
             $res->getByte(); // player index
-            $players[] = $res->getString();
-            $res->getLong(); // score
-            $res->getFloat(); // duration
+            $player['name'] = $res->getString();
+            $player['score'] = $res->getLong();
+            $player['time'] = $res->getFloat();
             if($this->appId === 2400) { // the ship
                 $res->getLong(); // deaths
                 $res->getLong(); // money
             }
+
+            $players[] = $player;
         }
-        $this->setPlayerList($players);
+
+        $this->setPlayerList($this->filterPlayerList($players));
     }
 
     /**
-     * Request a challenge number needed to make player request
+     * Filter out blank player names and optionally bots
      * 
-     * @param resource $fp Handle to an open socket
-     * @return int Challenge number
-     * @throws Exception
+     * @param mixed[] $playerList
+     * @return string[] List of player names
      */
-    protected static function getChallengeNumber($fp) {
-        $req = pack('cccccl', 0xFF, 0xFF, 0xFF, 0xFF, 0x55, -1);
-        fwrite($fp, $req);
-
-        $res = self::assembleResponse($fp);
-        if($res->getByte() !== 0x41) {
-            throw new Exception('Bad challenge response');
+    public function filterPlayerList(array $playerList) {
+        if($this->config['hideBots'] && $this->numBots > 0) {
+            $playerList = self::filterBots($playerList);
         }
-        return $res->getLong();
+
+        $playerNames = array();
+        foreach($playerList as $player) {
+            if($player['name'] === '') {
+                continue;
+            }
+
+            $playerNames[] = $player['name'];
+        }
+
+        return $playerNames;
+    }
+
+    /**
+     * Removes bots from the player list
+     * 
+     * @param mixed[] $playerList
+     * @return mixed[] Filtered list of players
+     */
+    protected static function filterBots(array $playerList) {
+        $filteredList = array();
+        $maxTime = 0;
+        foreach($playerList as $player) {
+            if($player['time'] > $maxTime) {
+                $maxTime = $player['time'];
+            }
+        }
+        foreach($playerList as $player) {
+            if($player['time'] !== $maxTime) {
+                $filteredList[] = $player;
+            }
+        }
+
+        return $filteredList;
     }
 
     /**
