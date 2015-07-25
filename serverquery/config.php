@@ -47,6 +47,18 @@ class SQConfig {
     const WEB_PATH = 'serverquery/';
 
     /**
+     * Enable to use a cron job to query servers
+     *
+     * If enabled, the Web-facing script always returns data immediately from the cache. The cache
+     * is updated using the cron.php script which should be executed by a cron job.
+     *
+     * CACHE_ENABLED must be true to use this feature.
+     *
+     * Example crontab: * * * * * php /path/to/cron.php > /dev/null 2>&1
+     */
+    const CRON_MODE = true;
+
+    /**
      * Game configurations
      *
      * Format:

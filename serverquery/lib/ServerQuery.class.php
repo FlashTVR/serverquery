@@ -41,6 +41,13 @@ class ServerQuery {
     private $useCache = false;
 
     /**
+     * Cron mode is active
+     *
+     * @var bool
+     */
+    private $cronMode = false;
+
+    /**
      * Array of prepared Gameserver objects
      *
      * @var Gameserver[]
@@ -54,6 +61,7 @@ class ServerQuery {
         if(SQConfig::CACHE_ENABLE) {
             $dir = __DIR__ . '/../cache';
             $this->useCache = is_dir($dir) && is_writable($dir);
+            $this->cronMode = $this->useCache && SQConfig::CRON_MODE;
         }
     }
 
@@ -119,7 +127,28 @@ class ServerQuery {
      */
     public function exec() {
         foreach(SQConfig::$servers as $server) {
-            $this->servers[] = $this->getServerObject($server);
+            $update = !$this->cronMode;
+            $this->servers[] = $this->getServerObject($server, $update);
+        }
+    }
+
+    /**
+     * Execute cron tasks
+     * 
+     * @param int $timeLimit Maximum execution time in seconds
+     */
+    public function cron($timeLimit = 60) {
+        if($this->useCache) {
+            shuffle(SQConfig::$servers);
+
+            $startTime = time();
+            foreach(SQConfig::$servers as $server) {
+                if(time() - $startTime >= $timeLimit) {
+                    return;
+                }
+
+                $this->getServerObject($server);
+            }
         }
     }
 
@@ -127,9 +156,10 @@ class ServerQuery {
      * Get a Gameserver object based on a server config
      * 
      * @param mixed[] $server Element from the servers config
+     * @param bool $update Query server for updated status
      * @return Gameserver
      */
-    private function getServerObject(array $server) {
+    private function getServerObject(array $server, $update = true) {
         $gs = self::initServerObject($server);
         if($this->useCache) {
             $cached = self::getFromCache($gs);
@@ -141,10 +171,12 @@ class ServerQuery {
             }
         }
 
-        $gs->update();
+        if($update) {
+            $gs->update();
 
-        if($this->useCache) {
-            $this->updateCache($gs);
+            if($this->useCache) {
+                $this->updateCache($gs);
+            }
         }
 
         return $gs;
