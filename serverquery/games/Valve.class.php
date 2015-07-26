@@ -69,7 +69,7 @@ class Game_Valve extends Gameserver {
             try {
                 $this->makePlayerRequest($fp);
             } catch(Exception $e) {
-                
+                $this->setPlayerList(array());
             }
         } catch(Exception $e) {
             fclose($fp);
