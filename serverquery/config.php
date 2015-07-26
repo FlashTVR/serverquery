@@ -56,7 +56,7 @@ class SQConfig {
      *
      * Example crontab: * * * * * php /path/to/cron.php > /dev/null 2>&1
      */
-    const CRON_MODE = true;
+    const CRON_MODE = false;
 
     /**
      * Maximum time in seconds to wait for servers to respond
