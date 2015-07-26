@@ -75,7 +75,7 @@ class Game_Valve extends Gameserver {
             fclose($fp);
             throw $e;
         }
-        
+
         fclose($fp);
     }
 
@@ -163,7 +163,7 @@ class Game_Valve extends Gameserver {
             $res->getByte(); // player index
             $player['name'] = $res->getString();
             $player['score'] = $res->getLong();
-            $player['time'] = $res->getFloat();
+            $player['time'] = (int)$res->getFloat();
             if($this->appId === 2400) { // the ship
                 $res->getLong(); // deaths
                 $res->getLong(); // money
@@ -209,9 +209,7 @@ class Game_Valve extends Gameserver {
         $filteredList = array();
         $maxTime = 0;
         foreach($playerList as $player) {
-            if($player['time'] > $maxTime) {
-                $maxTime = $player['time'];
-            }
+            $maxTime = max(array($player['time'], $maxTime));
         }
         foreach($playerList as $player) {
             if($player['time'] !== $maxTime) {
