@@ -106,7 +106,6 @@ class Game_Valve extends Gameserver {
         $this->numBots = $res->getByte();
 
         if($this->config['hideBots']) {
-            $this->setPlayerCount($this->getPlayerCount() - $this->numBots);
             $this->setMaxPlayers($this->getMaxPlayers() - $this->numBots);
         }
     }
@@ -185,6 +184,7 @@ class Game_Valve extends Gameserver {
     public function filterPlayerList(array $playerList) {
         if($this->config['hideBots'] && $this->numBots > 0) {
             $playerList = self::filterBots($playerList);
+            $this->setPlayerCount(count($playerList));
         }
 
         $playerNames = array();
