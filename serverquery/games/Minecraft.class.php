@@ -32,6 +32,7 @@
 class Game_Minecraft extends Gameserver {
 
     protected $defaultConfig = array(
+        'useQuery' => false,
         'queryPort' => 25565,
         'useLegacy' => false,
     );
@@ -46,8 +47,150 @@ class Game_Minecraft extends Gameserver {
     protected function query($timeout) {
         if($this->config['useLegacy']) {
             $this->queryLagacy($timeout);
-        } else {
+        } elseif($this->config['useQuery']) {
             $this->queryQuery($timeout);
+        } else {
+            $this->querySLP($timeout);
+        }
+    }
+
+    /**
+     * Query the server using the Server List Ping protocol
+     * 
+     * @param int $timeout Socket timeout in seconds
+     * @throws Exception
+     */
+    protected function querySLP($timeout) {
+        $fp = @stream_socket_client('tcp://' . $this->getAddress(), $errno, $errstr, $timeout);
+        if(!$fp) {
+            throw new Exception($errstr, $errno);
+        }
+
+        stream_set_timeout($fp, $timeout);
+
+        try {
+            $this->sendSLPRequest($fp);
+            $this->readSLPResponse($fp);
+        } catch(Exception $e) {
+            fclose($fp);
+            throw $e;
+        }
+
+        fclose($fp);
+    }
+
+    /**
+     * Send a Server List Ping request
+     * 
+     * @param resource $fp Handle to an open socket
+     * @throws Exception
+     */
+    protected function sendSLPRequest($fp) {
+        $req = array(
+            chr(0),
+            self::packVarInt(47),
+            self::packSLPString($this->getHostname()),
+            pack('n', $this->getPort()),
+            self::packVarInt(1)
+        );
+        $req = self::packSLPString(implode('', $req));
+        fwrite($fp, $req);
+
+        $req = self::packSLPString(chr(0));
+        fwrite($fp, $req);
+    }
+
+    /**
+     * Read the JSON text from the Server List Ping response
+     * 
+     * @param resource $fp Handle to an open socket
+     * @throws Exception
+     */
+    protected function readSLPResponse($fp) {
+        self::unpackVarInt($fp);
+        self::unpackVarInt($fp);
+        $length = self::unpackVarInt($fp);
+
+        $json = '';
+        while(strlen($json) < $length) {
+            $json .= fread($fp, 2048);
+        }
+
+        $this->parseSLPJson($json);
+    }
+
+    /**
+     * Parse a Server List Ping JSON string and set server status properties
+     * 
+     * @param string $jsonString
+     * @throws Exception
+     */
+    protected function parseSLPJson($jsonString) {
+        $json = json_decode($jsonString);
+        if(!$json) {
+            throw new Exception('Invalid JSON string');
+        }
+
+        $this->setName($json->description);
+        $this->setPlayerCount($json->players->online);
+        $this->setMaxPlayers($json->players->max);
+
+        if(property_exists($json->players, 'sample')) {
+            $players = array();
+            foreach($json->players->sample as $player) {
+                $players[] = $player->name;
+            }
+            $this->setPlayerList($players);
+        }
+    }
+
+    /**
+     * Pack a string into protocol String format
+     * 
+     * @param string $string
+     * @return string Length of string in VarInt followed by the string
+     */
+    protected static function packSLPString($string) {
+        return self::packVarInt(strlen($string)) . $string;
+    }
+
+    /**
+     * Pack integer into protocol VarInt format
+     * 
+     * @param int $int
+     * @return string
+     */
+    protected static function packVarInt($int) {
+        $varInt = '';
+        while(true) {
+            if(($int & 0xFFFFFF80) === 0) {
+                $varInt .= chr($int);
+                return $varInt;
+            }
+            $varInt .= chr($int & 0x7F | 0x80);
+            $int >>= 7;
+        }
+    }
+
+    /**
+     * Read and unpack protocol VarInt into integer
+     * 
+     * @param resource $fp Handle to an open socket
+     * @return int
+     * @throws Exception
+     */
+    protected static function unpackVarInt($fp) {
+        $int = 0;
+        $pos = 0;
+        while(true) {
+            $byte = ord(fread($fp, 1));
+            $int |= ($byte & 0x7F) << $pos++ * 7;
+            if($pos > 5) {
+                throw new Exception('VarInt too large');
+            }
+            if(($byte & 0x80) !== 128) {
+                return $int;
+            }
         }
     }
 
@@ -68,12 +211,12 @@ class Game_Minecraft extends Gameserver {
         $sessId = rand() & 0x0F0F0F0F;
 
         try {
-            $token = $this->performHandshake($fp, $sessId);
-            $this->requestStat($fp, $sessId, $token);
+            $token = $this->performQueryHandshake($fp, $sessId);
+            $this->requestQueryStat($fp, $sessId, $token);
             fread($fp, 11);
-            $this->parseKeyValues($fp);
+            $this->parseQueryKeyValues($fp);
             fread($fp, 10);
-            $this->parsePlayers($fp);
+            $this->parseQueryPlayers($fp);
         } catch(Exception $e) {
             fclose($fp);
             throw $e;
@@ -99,7 +242,7 @@ class Game_Minecraft extends Gameserver {
      * @return int Token
      * @throws Exception
      */
-    private function performHandshake($fp, $sessId) {
+    private function performQueryHandshake($fp, $sessId) {
         $req = pack('cccN', 0xFE, 0xFD, 9, $sessId);
         fwrite($fp, $req);
 
@@ -115,14 +258,14 @@ class Game_Minecraft extends Gameserver {
     }
 
     /**
-     * Make request for full server stat
+     * Make request for full server stat using the Query protocol
      *
      * @param resource $fp Handle to an open socket
      * @param int $sessId Session ID
      * @param int $token Challenge token
      * @throws Exception
      */
-    private function requestStat($fp, $sessId, $token) {
+    private function requestQueryStat($fp, $sessId, $token) {
         $req = pack('cccNNN', 0xFE, 0xFD, 0, $sessId, $token, 0);
         fwrite($fp, $req);
 
@@ -134,11 +277,11 @@ class Game_Minecraft extends Gameserver {
     }
 
     /**
-     * Parse the key value section of the response
+     * Parse the key value section of the Query response
      *
      * @param resource $fp Handle to an open socket
      */
-    private function parseKeyValues($fp) {
+    private function parseQueryKeyValues($fp) {
         $info = array();
         $key = $val = '';
         $keyRead = false;
@@ -165,15 +308,15 @@ class Game_Minecraft extends Gameserver {
             }
         }
 
-        $this->setServerInfo($info);
+        $this->setQueryServerInfo($info);
     }
 
     /**
-     * Set relevant properties from the key values
+     * Set relevant properties from the Query key values
      *
      * @param string[] $info Associative array of server properties
      */
-    private function setServerInfo(array $info) {
+    private function setQueryServerInfo(array $info) {
         $this->setName($info['hostname']);
         $this->setMapName($info['map']);
         $this->setPlayerCount((int)$info['numplayers']);
@@ -181,11 +324,11 @@ class Game_Minecraft extends Gameserver {
     }
 
     /**
-     * Parse the players section of the response
+     * Parse the players section of the Query response
      *
      * @param resource $fp Handle to an open socket
      */
-    private function parsePlayers($fp) {
+    private function parseQueryPlayers($fp) {
         $players = array();
         $val = '';
         while(true) {
@@ -231,7 +374,7 @@ class Game_Minecraft extends Gameserver {
     }
 
     /**
-     * Pack a string into legacy packet format
+     * Pack a string into legacy Server List Ping packet format
      * 
      * @param string $string
      * @return string
@@ -242,7 +385,7 @@ class Game_Minecraft extends Gameserver {
     }
 
     /**
-     * Decode a UTF-16BE string
+     * Decode a UTF-16BE string from a legacy Server List Ping response
      * 
      * @param string $string UTF-16BE string
      * @return string UTF-8 string
@@ -252,7 +395,7 @@ class Game_Minecraft extends Gameserver {
     }
 
     /**
-     * Send a Server List Ping request to the server
+     * Send a legacy Server List Ping request to the server
      * 
      * @param resource $fp Handle to an open socket
      */
@@ -267,7 +410,7 @@ class Game_Minecraft extends Gameserver {
     }
 
     /**
-     * Read and parse the response from the server
+     * Read and parse the response from the legacy Server List Ping request
      * 
      * @param resource $fp Handle to an open socket
      * @throws Exception
