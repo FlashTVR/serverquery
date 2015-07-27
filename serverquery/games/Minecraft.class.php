@@ -32,8 +32,17 @@
 class Game_Minecraft extends Gameserver {
 
     protected $defaultConfig = array(
+        /**
+         * @var bool Use the Query protocol (server must set enable-query=true)
+         */
         'useQuery' => false,
+        /**
+         * @var int Port used by the Query protocol (server query.port property)
+         */
         'queryPort' => 25565,
+        /**
+         * @var bool Use the pre-1.7 Server List Ping protocol (overrides useQuery)
+         */
         'useLegacy' => false,
     );
     protected $port = 25565;

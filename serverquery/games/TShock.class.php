@@ -32,6 +32,9 @@
 class Game_TShock extends Gameserver {
 
     protected $defaultConfig = array(
+        /**
+         * @var int Port used to query the server REST API
+         */
         'queryPort' => 7878,
     );
     protected $port = 7777;

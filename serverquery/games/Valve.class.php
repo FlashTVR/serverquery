@@ -34,6 +34,9 @@ require __DIR__ . '/../lib/ValveBuffer.class.php';
 class Game_Valve extends Gameserver {
 
     protected $defaultConfig = array(
+        /**
+         * @var bool Hide bots from player count and list
+         */
         'hideBots' => true,
     );
     protected $port = 27015;
