@@ -64,6 +64,23 @@ class SQConfig {
     const QUERY_TIMEOUT = 2;
 
     /**
+     * Server configurations
+     *
+     * Format:
+     * array[]['game'] string A key from $games
+     * array[]['addr'] string Hostname for the server
+     * array[]['config'] mixed[] Optional configuration for this server
+     *
+     * @var mixed[]
+     */
+    public static $servers = array(
+        array(
+            'game' => 'tf2',
+            'addr' => '127.0.0.1:27015',
+        ),
+    );
+
+    /**
      * Game configurations
      *
      * Format:
@@ -148,23 +165,6 @@ class SQConfig {
         'terraria' => array(
             'name'  => 'Terraria',
             'class' => 'Game_TShock',
-        ),
-    );
-
-    /**
-     * Server configurations
-     *
-     * Format:
-     * array[]['game'] string A key from $games
-     * array[]['addr'] string Hostname for the server
-     * array[]['config'] mixed[] Optional configuration for this server
-     *
-     * @var mixed[]
-     */
-    public static $servers = array(
-        array(
-            'game' => 'tf2',
-            'addr' => '127.0.0.1:27015',
         ),
     );
 }
