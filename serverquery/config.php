@@ -74,12 +74,64 @@ class SQConfig {
      * @var mixed[]
      */
     public static $games = array(
-        'tf2' => array(
-            'name'  => 'Team Fortress 2',
+        'cs' => array(
+            'name'  => 'Counter-Strike',
+            'class' => 'Game_Valve',
+        ),
+        'csgo' => array(
+            'name'  => 'Counter-Strike: Global Offensive',
+            'class' => 'Game_Valve',
+        ),
+        'css' => array(
+            'name'  => 'Counter-Strike: Source',
             'class' => 'Game_Valve',
         ),
         'dod' => array(
             'name'  => 'Day of Defeat',
+            'class' => 'Game_Valve',
+        ),
+        'dods' => array(
+            'name'  => 'Day of Defeat: Source',
+            'class' => 'Game_Valve',
+        ),
+        'ff' => array(
+            'name'  => 'Fortress Forever',
+            'class' => 'Game_Valve',
+        ),
+        'gmod' => array(
+            'name'  => 'Garrysmod',
+            'class' => 'Game_Valve',
+        ),
+        'hl' => array(
+            'name'  => 'Half-Life',
+            'class' => 'Game_Valve',
+        ),
+        'hl2' => array(
+            'name'  => 'Half-Life 2',
+            'class' => 'Game_Valve',
+        ),
+        'ins' => array(
+            'name'  => 'Insurgency',
+            'class' => 'Game_Valve',
+        ),
+        'l4d' => array(
+            'name'  => 'Left 4 Dead',
+            'class' => 'Game_Valve',
+        ),
+        'l4d2' => array(
+            'name'  => 'Left 4 Dead 2',
+            'class' => 'Game_Valve',
+        ),
+        'ns' => array(
+            'name'  => 'Natural Selection',
+            'class' => 'Game_Valve',
+        ),
+        'tf2' => array(
+            'name'  => 'Team Fortress 2',
+            'class' => 'Game_Valve',
+        ),
+        'tfc' => array(
+            'name'  => 'Team Fortress Classic',
             'class' => 'Game_Valve',
         ),
         'minecraft' => array(
