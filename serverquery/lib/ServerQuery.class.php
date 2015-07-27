@@ -191,7 +191,7 @@ class ServerQuery {
     private static function initServerObject(array $server) {
         $className = SQConfig::$games[$server['game']]['class'];
         if(!class_exists($className)) {
-            $fileName = __DIR__ . '/../games/';
+            $fileName = __DIR__ . '/games/';
             $fileName .= substr($className, strrpos($className, '_') + 1);
             $fileName .= '.class.php';
             require $fileName;
