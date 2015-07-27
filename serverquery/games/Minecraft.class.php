@@ -40,7 +40,7 @@ class Game_Minecraft extends Gameserver {
 
     public function setName($name) {
         // strip color and formatting codes
-        $name = preg_replace('/\xA7./', '', $name);
+        $name = preg_replace('/\xC2|\xA7./', '', $name);
         parent::setName($name);
     }
 
