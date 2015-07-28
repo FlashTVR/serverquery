@@ -25,7 +25,7 @@
  */
 
 /**
- * Description of MinecraftLegacy
+ * Uses the legacy Server List Ping protocol to query Minecraft servers
  *
  * @author Steve Guidetti
  */

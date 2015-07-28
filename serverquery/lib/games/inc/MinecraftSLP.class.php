@@ -25,7 +25,7 @@
  */
 
 /**
- * Description of MinecraftSLP
+ * Uses the post-1.7 Server List Ping protocol to query Minecraft servers
  *
  * @author Steve Guidetti
  */

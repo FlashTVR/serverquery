@@ -25,7 +25,7 @@
  */
 
 /**
- * Description of MinecraftQuery
+ * Uses the Query protocol to query Minecraft servers
  *
  * @author Steve Guidetti
  */
