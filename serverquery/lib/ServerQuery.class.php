@@ -31,7 +31,7 @@ require __DIR__ . '/Gameserver.class.php';
  *
  * @author Steve Guidetti
  */
-class ServerQuery {
+class SQ_ServerQuery {
 
     /**
      * Use the cache to store server data
@@ -50,7 +50,7 @@ class ServerQuery {
     /**
      * Array of prepared Gameserver objects
      *
-     * @var Gameserver[]
+     * @var SQ_Gameserver[]
      */
     private $servers = array();
 
@@ -58,17 +58,17 @@ class ServerQuery {
      * Constructor
      */
     public function __construct() {
-        if(SQConfig::CACHE_ENABLE) {
+        if(SQ_Config::CACHE_ENABLE) {
             $dir = __DIR__ . '/../cache';
             $this->useCache = is_dir($dir) && is_writable($dir);
-            $this->cronMode = $this->useCache && SQConfig::CRON_MODE;
+            $this->cronMode = $this->useCache && SQ_Config::CRON_MODE;
         }
     }
 
     /**
      * Get the list of Gameserver objects
      * 
-     * @return Gameserver[]
+     * @return SQ_Gameserver[]
      */
     public function getServers() {
         return $this->servers;
@@ -86,9 +86,9 @@ class ServerQuery {
             $server->online = $gs->isOnline();
             $server->error = $gs->getError();
 
-            $gameId = SQConfig::$servers[$key]['game'];
+            $gameId = SQ_Config::$servers[$key]['game'];
             $server->gameId = $gameId;
-            $server->gameName = htmlspecialchars(SQConfig::$games[$gameId]['name']);
+            $server->gameName = htmlspecialchars(SQ_Config::$games[$gameId]['name']);
             $server->gameIcon = self::getGameImageURL($gameId);
 
             $server->addr = $gs->getAddress();
@@ -108,7 +108,7 @@ class ServerQuery {
 
         return array(
             'servers' => $servers,
-            'stylesheet' => SQConfig::WEB_PATH . 'serverquery.css',
+            'stylesheet' => SQ_Config::WEB_PATH . 'serverquery.css',
         );
     }
 
@@ -119,14 +119,14 @@ class ServerQuery {
      * @return string
      */
     public static function getGameImageURL($gameId) {
-        return SQConfig::WEB_PATH . 'img/games/' . $gameId . '.png';
+        return SQ_Config::WEB_PATH . 'img/games/' . $gameId . '.png';
     }
 
     /**
      * Execute main application logic
      */
     public function exec() {
-        foreach(SQConfig::$servers as $server) {
+        foreach(SQ_Config::$servers as $server) {
             $update = !$this->cronMode;
             $this->servers[] = $this->getServerObject($server, $update);
         }
@@ -139,10 +139,10 @@ class ServerQuery {
      */
     public function cron($timeLimit = 60) {
         if($this->useCache) {
-            shuffle(SQConfig::$servers);
+            shuffle(SQ_Config::$servers);
 
             $startTime = time();
-            foreach(SQConfig::$servers as $server) {
+            foreach(SQ_Config::$servers as $server) {
                 if(time() - $startTime >= $timeLimit) {
                     return;
                 }
@@ -157,7 +157,7 @@ class ServerQuery {
      * 
      * @param mixed[] $server Element from the servers config
      * @param bool $update Query server for updated status
-     * @return Gameserver
+     * @return SQ_Gameserver
      */
     private function getServerObject(array $server, $update = true) {
         $gs = self::initServerObject($server);
@@ -166,7 +166,7 @@ class ServerQuery {
             if($cached) {
                 $gs = $cached;
             }
-            if(time() - $gs->getQueryTime() < SQConfig::CACHE_TIME) {
+            if(time() - $gs->getQueryTime() < SQ_Config::CACHE_TIME) {
                 return $gs;
             }
         }
@@ -186,10 +186,10 @@ class ServerQuery {
      * Initialize a Gameserver object based on a server config
      * 
      * @param mixed[] $server Element from the servers config
-     * @return Gameserver
+     * @return SQ_Gameserver
      */
     private static function initServerObject(array $server) {
-        $className = SQConfig::$games[$server['game']]['class'];
+        $className = 'SQ_Game_' . SQ_Config::$games[$server['game']]['class'];
         if(!class_exists($className)) {
             $fileName = __DIR__ . '/games/';
             $fileName .= substr($className, strrpos($className, '_') + 1);
@@ -209,8 +209,8 @@ class ServerQuery {
     private static function getServerConfig(array $server) {
         $config = array_key_exists('config', $server) ? $server['config'] : array();
 
-        if(array_key_exists('config', SQConfig::$games[$server['game']])) {
-            $config = array_merge(SQConfig::$games[$server['game']]['config'], $config);
+        if(array_key_exists('config', SQ_Config::$games[$server['game']])) {
+            $config = array_merge(SQ_Config::$games[$server['game']]['config'], $config);
         }
 
         return $config;
@@ -219,10 +219,10 @@ class ServerQuery {
     /**
      * Retrieve a Gameserver object from the cache
      * 
-     * @param Gameserver $server
-     * @return Gameserver|false Boolean false if object is not found
+     * @param SQ_Gameserver $server
+     * @return SQ_Gameserver|false Boolean false if object is not found
      */
-    private static function getFromCache(Gameserver $server) {
+    private static function getFromCache(SQ_Gameserver $server) {
         $fileName = self::getCacheFileName($server);
 
         if(!file_exists($fileName)) {
@@ -242,9 +242,9 @@ class ServerQuery {
     /**
      * Store a Gameserver object in the cache
      * 
-     * @param Gameserver $server
+     * @param SQ_Gameserver $server
      */
-    private static function updateCache(Gameserver $server) {
+    private static function updateCache(SQ_Gameserver $server) {
         $fileName = self::getCacheFileName($server);
 
         $data = serialize($server);
@@ -254,10 +254,10 @@ class ServerQuery {
     /**
      * Get the name of a cache file based on a Gameserver object
      * 
-     * @param Gameserver $server
+     * @param SQ_Gameserver $server
      * @return string
      */
-    private static function getCacheFileName(Gameserver $server) {
+    private static function getCacheFileName(SQ_Gameserver $server) {
         $fileName = __DIR__ . '/../cache/';
         $fileName .= $server->getGameId() . '_';
         $fileName .= str_replace(':', '_', $server->getAddress());

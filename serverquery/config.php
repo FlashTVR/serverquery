@@ -29,7 +29,7 @@
  *
  * @author Steve Guidetti
  */
-class SQConfig {
+class SQ_Config {
 
     /**
      * Enable caching of server response data
@@ -93,78 +93,78 @@ class SQConfig {
     public static $games = array(
         'cs' => array(
             'name'  => 'Counter-Strike',
-            'class' => 'Game_Valve',
+            'class' => 'Valve',
         ),
         'csgo' => array(
             'name'  => 'Counter-Strike: Global Offensive',
-            'class' => 'Game_Valve',
+            'class' => 'Valve',
         ),
         'css' => array(
             'name'  => 'Counter-Strike: Source',
-            'class' => 'Game_Valve',
+            'class' => 'Valve',
         ),
         'dod' => array(
             'name'  => 'Day of Defeat',
-            'class' => 'Game_Valve',
+            'class' => 'Valve',
         ),
         'dods' => array(
             'name'  => 'Day of Defeat: Source',
-            'class' => 'Game_Valve',
+            'class' => 'Valve',
         ),
         'ff' => array(
             'name'  => 'Fortress Forever',
-            'class' => 'Game_Valve',
+            'class' => 'Valve',
         ),
         'gmod' => array(
             'name'  => 'Garrysmod',
-            'class' => 'Game_Valve',
+            'class' => 'Valve',
         ),
         'hl' => array(
             'name'  => 'Half-Life',
-            'class' => 'Game_Valve',
+            'class' => 'Valve',
         ),
         'hl2' => array(
             'name'  => 'Half-Life 2',
-            'class' => 'Game_Valve',
+            'class' => 'Valve',
         ),
         'ins' => array(
             'name'  => 'Insurgency',
-            'class' => 'Game_Valve',
+            'class' => 'Valve',
         ),
         'l4d' => array(
             'name'  => 'Left 4 Dead',
-            'class' => 'Game_Valve',
+            'class' => 'Valve',
         ),
         'l4d2' => array(
             'name'  => 'Left 4 Dead 2',
-            'class' => 'Game_Valve',
+            'class' => 'Valve',
         ),
         'ns' => array(
             'name'  => 'Natural Selection',
-            'class' => 'Game_Valve',
+            'class' => 'Valve',
         ),
         'tf2' => array(
             'name'  => 'Team Fortress 2',
-            'class' => 'Game_Valve',
+            'class' => 'Valve',
         ),
         'tfc' => array(
             'name'  => 'Team Fortress Classic',
-            'class' => 'Game_Valve',
+            'class' => 'Valve',
         ),
         'minecraft' => array(
             'name'  => 'Minecraft',
-            'class' => 'Game_Minecraft',
+            'class' => 'Minecraft',
         ),
         'tekkit' => array(
             'name'  => 'Tekkit',
-            'class' => 'Game_Minecraft',
+            'class' => 'Minecraft',
             'config'    => array(
                 'useLegacy' => true,
             ),
         ),
         'terraria' => array(
             'name'  => 'Terraria',
-            'class' => 'Game_TShock',
+            'class' => 'TShock',
         ),
     );
 }

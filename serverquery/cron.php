@@ -27,9 +27,9 @@
 require __DIR__ . '/config.php';
 require __DIR__ . '/lib/ServerQuery.class.php';
 
-$sleepTime = SQConfig::CACHE_TIME;
+$sleepTime = SQ_Config::CACHE_TIME;
 
-$sq = new ServerQuery();
+$sq = new SQ_ServerQuery();
 
 $startTime = time();
 while(time() - $startTime < 60 - $sleepTime) {

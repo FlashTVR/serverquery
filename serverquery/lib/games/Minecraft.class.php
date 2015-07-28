@@ -29,7 +29,7 @@
  *
  * @author Steve Guidetti
  */
-class Game_Minecraft extends Gameserver {
+class SQ_Game_Minecraft extends SQ_Gameserver {
 
     protected $defaultConfig = array(
         /**
@@ -55,20 +55,20 @@ class Game_Minecraft extends Gameserver {
 
     protected function query($timeout) {
         if($this->config['useLegacy']) {
-            if(!class_exists('MinecraftLegacy')) {
+            if(!class_exists('SQ_MinecraftLegacy')) {
                 require __DIR__ . '/inc/MinecraftLegacy.class.php';
             }
-            $obj = new MinecraftLegacy($this);
+            $obj = new SQ_MinecraftLegacy($this);
         } elseif($this->config['useQuery']) {
-            if(!class_exists('MinecraftQuery')) {
+            if(!class_exists('SQ_MinecraftQuery')) {
                 require __DIR__ . '/inc/MinecraftQuery.class.php';
             }
-            $obj = new MinecraftQuery($this, $this->config['queryPort']);
+            $obj = new SQ_MinecraftQuery($this, $this->config['queryPort']);
         } else {
-            if(!class_exists('MinecraftSLP')) {
+            if(!class_exists('SQ_MinecraftSLP')) {
                 require __DIR__ . '/inc/MinecraftSLP.class.php';
             }
-            $obj = new MinecraftSLP($this);
+            $obj = new SQ_MinecraftSLP($this);
         }
 
         $obj->query($timeout);

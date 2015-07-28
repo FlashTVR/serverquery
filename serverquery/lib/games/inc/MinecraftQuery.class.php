@@ -29,12 +29,12 @@
  *
  * @author Steve Guidetti
  */
-class MinecraftQuery {
+class SQ_MinecraftQuery {
 
     /**
      * Mincraft Gameserver object
      *
-     * @var Game_Minecraft
+     * @var SQ_Game_Minecraft
      */
     private $gs;
 
@@ -48,10 +48,10 @@ class MinecraftQuery {
     /**
      * Constructor
      * 
-     * @param Game_Minecraft $gs Mincraft Gameserver object
+     * @param SQ_Game_Minecraft $gs Mincraft Gameserver object
      * @param int $queryPort Port used to query the server
      */
-    public function __construct(Game_Minecraft $gs, $queryPort = 25565) {
+    public function __construct(SQ_Game_Minecraft $gs, $queryPort = 25565) {
         $this->gs = $gs;
         $this->queryPort = $queryPort;
     }

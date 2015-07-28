@@ -29,21 +29,21 @@
  *
  * @author Steve Guidetti
  */
-class MinecraftSLP {
+class SQ_MinecraftSLP {
 
     /**
      * Mincraft Gameserver object
      *
-     * @var Game_Minecraft
+     * @var SQ_Game_Minecraft
      */
     private $gs;
 
     /**
      * Constructor
      * 
-     * @param Game_Minecraft $gs Mincraft Gameserver object
+     * @param SQ_Game_Minecraft $gs Mincraft Gameserver object
      */
-    public function __construct(Game_Minecraft $gs) {
+    public function __construct(SQ_Game_Minecraft $gs) {
         $this->gs = $gs;
     }
 

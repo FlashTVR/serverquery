@@ -29,7 +29,7 @@
  *
  * @author Steve Guidetti
  */
-class Game_TShock extends Gameserver {
+class SQ_Game_TShock extends SQ_Gameserver {
 
     protected $defaultConfig = array(
         /**

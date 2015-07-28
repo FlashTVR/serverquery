@@ -30,6 +30,6 @@ include __DIR__ . '/lib/ServerQuery.class.php';
 
 header('Content-Type: text/plain; charset=UTF-8');
 
-$sq = new ServerQuery();
+$sq = new SQ_ServerQuery();
 $sq->exec();
 var_dump($sq);

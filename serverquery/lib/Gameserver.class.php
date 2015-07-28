@@ -29,7 +29,7 @@
  *
  * @author Steve Guidetti
  */
-abstract class Gameserver {
+abstract class SQ_Gameserver {
 
     /**
      * Key from the SQConfig::$games array
@@ -338,7 +338,7 @@ abstract class Gameserver {
         $this->online = false;
 
         try {
-            $timeout = (int)SQConfig::QUERY_TIMEOUT > 0 ? SQConfig::QUERY_TIMEOUT : 1;
+            $timeout = (int)SQ_Config::QUERY_TIMEOUT > 0 ? SQ_Config::QUERY_TIMEOUT : 1;
             $this->query($timeout);
             $this->online = true;
         } catch(Exception $e) {

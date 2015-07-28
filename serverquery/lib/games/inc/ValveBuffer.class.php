@@ -29,7 +29,7 @@
  *
  * @author Steve Guidetti
  */
-class ValveBuffer {
+class SQ_ValveBuffer {
 
     private $buffer = '';
     private $length = 0;

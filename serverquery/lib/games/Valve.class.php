@@ -31,7 +31,7 @@ require __DIR__ . '/inc/ValveBuffer.class.php';
  *
  * @author Steve Guidetti
  */
-class Game_Valve extends Gameserver {
+class SQ_Game_Valve extends SQ_Gameserver {
 
     protected $defaultConfig = array(
         /**
@@ -155,9 +155,9 @@ class Game_Valve extends Gameserver {
     /**
      * Read the response to the player list request
      * 
-     * @param ValveBuffer $res
+     * @param SQ_ValveBuffer $res
      */
-    protected function readPlayerResponse(ValveBuffer $res) {
+    protected function readPlayerResponse(SQ_ValveBuffer $res) {
         $playerCount = $res->getByte();
         $players = array();
         while(count($players) < $playerCount) {
@@ -227,11 +227,11 @@ class Game_Valve extends Gameserver {
      * Read response and combine packets if necessary
      * 
      * @param resource $fp Handle to an open socket
-     * @return ValveBuffer Response payload
+     * @return SQ_ValveBuffer Response payload
      * @throws Exception
      */
     protected static function assembleResponse($fp) {
-        $buffer = new ValveBuffer();
+        $buffer = new SQ_ValveBuffer();
 
         $buffer->set(fread($fp, 1400));
 

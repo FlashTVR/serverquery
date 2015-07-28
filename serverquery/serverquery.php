@@ -27,7 +27,7 @@
 require __DIR__ . '/config.php';
 require __DIR__ . '/lib/ServerQuery.class.php';
 
-$sq = new ServerQuery();
+$sq = new SQ_ServerQuery();
 $sq->exec();
 
 $data = $sq->getTemplateData();
