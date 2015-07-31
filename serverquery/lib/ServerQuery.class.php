@@ -88,19 +88,19 @@ class SQ_ServerQuery {
 
             $gameId = SQ_Config::$servers[$key]['game'];
             $server->gameId = $gameId;
-            $server->gameName = htmlspecialchars(SQ_Config::$games[$gameId]['name']);
+            $server->gameName = self::cleanOutput(SQ_Config::$games[$gameId]['name']);
             $server->gameIcon = self::getGameImageURL($gameId);
 
             $server->addr = $gs->getAddress();
             $server->link = $gs->getConnectLink();
-            $server->name = htmlspecialchars($gs->getName());
-            $server->map = htmlentities($gs->getMapName());
+            $server->name = self::cleanOutput($gs->getName());
+            $server->map = self::cleanOutput($gs->getMapName());
             $server->playerCount = $gs->getPlayerCount();
             $server->maxPlayers = $gs->getMaxPlayers();
 
             $server->players = $gs->getPlayerList();
             if($server->players !== null) {
-                array_walk($server->players, 'htmlspecialchars');
+                $server->players = self::cleanOutput($server->players);
             }
 
             $servers[] = $server;
@@ -110,6 +110,24 @@ class SQ_ServerQuery {
             'servers' => $servers,
             'stylesheet' => SQ_Config::WEB_PATH . 'serverquery.css',
         );
+    }
+
+    /**
+     * Makes a string or array of strings safe for HTML output
+     * 
+     * @param string|string[] $input
+     * @return string|string[] Clean version of $input
+     */
+    public static function cleanOutput($input) {
+        if(is_array($input)) {
+            $output = array();
+            foreach($input as $value) {
+                $output[] = htmlspecialchars($value);
+            }
+            return $output;
+        }
+
+        return htmlspecialchars($input);
     }
 
     /**
