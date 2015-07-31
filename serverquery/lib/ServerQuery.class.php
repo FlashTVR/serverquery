@@ -81,35 +81,45 @@ class SQ_ServerQuery {
      */
     public function getTemplateData() {
         $servers = array();
-        foreach($this->servers as $key => $gs) {
-            $server = new stdClass();
-            $server->online = $gs->isOnline();
-            $server->error = $gs->getError();
-
-            $gameId = SQ_Config::$servers[$key]['game'];
-            $server->gameId = $gameId;
-            $server->gameName = self::cleanOutput(SQ_Config::$games[$gameId]['name']);
-            $server->gameIcon = self::getGameImageURL($gameId);
-
-            $server->addr = $gs->getAddress();
-            $server->link = $gs->getConnectLink();
-            $server->name = self::cleanOutput($gs->getName());
-            $server->map = self::cleanOutput($gs->getMapName());
-            $server->playerCount = $gs->getPlayerCount();
-            $server->maxPlayers = $gs->getMaxPlayers();
-
-            $server->players = $gs->getPlayerList();
-            if($server->players !== null) {
-                $server->players = self::cleanOutput($server->players);
-            }
-
-            $servers[] = $server;
+        foreach($this->servers as $gs) {
+            $servers[] = self::getServerTemplateData($gs);
         }
 
         return array(
             'servers' => $servers,
             'stylesheet' => SQ_Config::WEB_PATH . 'serverquery.css',
         );
+    }
+
+    /**
+     * Get object containing the output data for a single server
+     * 
+     * @param SQ_Gameserver $gs 
+     * @return stdClass Anonymous object containing template values
+     */
+    private static function getServerTemplateData(SQ_Gameserver $gs) {
+        $server = new stdClass();
+        $server->online = $gs->isOnline();
+        $server->error = $gs->getError();
+
+        $gameId = $gs->getGameId();
+        $server->gameId = $gameId;
+        $server->gameName = self::cleanOutput(SQ_Config::$games[$gameId]['name']);
+        $server->gameIcon = self::getGameImageURL($gameId);
+
+        $server->addr = $gs->getAddress();
+        $server->link = $gs->getConnectLink();
+        $server->name = self::cleanOutput($gs->getName());
+        $server->map = self::cleanOutput($gs->getMapName());
+        $server->playerCount = $gs->getPlayerCount();
+        $server->maxPlayers = $gs->getMaxPlayers();
+
+        $server->players = $gs->getPlayerList();
+        if($server->players !== null) {
+            $server->players = self::cleanOutput($server->players);
+        }
+
+        return $server;
     }
 
     /**
