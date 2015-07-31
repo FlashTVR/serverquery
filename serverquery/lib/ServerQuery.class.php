@@ -66,79 +66,12 @@ class SQ_ServerQuery {
     }
 
     /**
-     * Get array of output data to use in the template
+     * Get the list of Gameserver objects
      * 
-     * @return mixed[]
+     * @return SQ_Gameserver[]
      */
-    public function getTemplateData() {
-        $servers = array();
-        foreach($this->servers as $gs) {
-            $servers[] = self::getServerTemplateData($gs);
-        }
-
-        return array(
-            'servers' => $servers,
-            'stylesheet' => SQ_Config::WEB_PATH . 'serverquery.css',
-        );
-    }
-
-    /**
-     * Get object containing the output data for a single server
-     * 
-     * @param SQ_Gameserver $gs 
-     * @return stdClass Anonymous object containing template values
-     */
-    private static function getServerTemplateData(SQ_Gameserver $gs) {
-        $server = new stdClass();
-        $server->online = $gs->isOnline();
-        $server->error = $gs->getError();
-
-        $gameId = $gs->getGameId();
-        $server->gameId = $gameId;
-        $server->gameName = self::cleanOutput(SQ_Config::$games[$gameId]['name']);
-        $server->gameIcon = self::getGameImageURL($gameId);
-
-        $server->addr = $gs->getAddress();
-        $server->link = $gs->getConnectLink();
-        $server->name = self::cleanOutput($gs->getName());
-        $server->map = self::cleanOutput($gs->getMapName());
-        $server->playerCount = $gs->getPlayerCount();
-        $server->maxPlayers = $gs->getMaxPlayers();
-
-        $server->players = $gs->getPlayerList();
-        if($server->players !== null) {
-            $server->players = self::cleanOutput($server->players);
-        }
-
-        return $server;
-    }
-
-    /**
-     * Makes a string or array of strings safe for HTML output
-     * 
-     * @param string|string[] $input
-     * @return string|string[] Clean version of $input
-     */
-    public static function cleanOutput($input) {
-        if(is_array($input)) {
-            $output = array();
-            foreach($input as $value) {
-                $output[] = htmlspecialchars($value);
-            }
-            return $output;
-        }
-
-        return htmlspecialchars($input);
-    }
-
-    /**
-     * Template helper to get the URL to a game icon
-     * 
-     * @param string $gameId Key from SQConfig::$games
-     * @return string
-     */
-    public static function getGameImageURL($gameId) {
-        return SQ_Config::WEB_PATH . 'img/games/' . $gameId . '.png';
+    public function getServers() {
+        return $this->servers;
     }
 
     /**
