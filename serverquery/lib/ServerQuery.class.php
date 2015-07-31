@@ -66,15 +66,6 @@ class SQ_ServerQuery {
     }
 
     /**
-     * Get the list of Gameserver objects
-     * 
-     * @return SQ_Gameserver[]
-     */
-    public function getServers() {
-        return $this->servers;
-    }
-
-    /**
      * Get array of output data to use in the template
      * 
      * @return mixed[]
