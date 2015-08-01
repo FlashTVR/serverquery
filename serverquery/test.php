@@ -27,9 +27,10 @@
 include __DIR__ . '/config.php';
 include __DIR__ . '/testconfig.php';
 include __DIR__ . '/lib/ServerQuery.class.php';
+include __DIR__ . '/lib/Template.class.php';
 
 header('Content-Type: text/plain; charset=UTF-8');
 
 $sq = new SQ_ServerQuery();
 $sq->exec();
-var_dump($sq);
+var_dump(SQ_Template::getTemplateData($sq));
