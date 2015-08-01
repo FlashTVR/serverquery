@@ -78,8 +78,8 @@ class SQ_ServerQuery {
      * Execute main application logic
      */
     public function exec() {
+        $update = !$this->cronMode;
         foreach(SQ_Config::$servers as $server) {
-            $update = !$this->cronMode;
             $this->servers[] = $this->getServerObject($server, $update);
         }
     }
