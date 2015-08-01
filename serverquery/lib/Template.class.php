@@ -75,27 +75,19 @@ class SQ_Template {
 
         $server->players = $gs->getPlayerList();
         if($server->players !== null) {
-            $server->players = self::cleanOutput($server->players);
+            $server->players = array_map(array('self', 'cleanOutput'), $server->players);
         }
 
         return $server;
     }
 
     /**
-     * Makes a string or array of strings safe for HTML output
+     * Makes a string safe for HTML output
      * 
-     * @param string|string[] $input
-     * @return string|string[] Clean version of $input
+     * @param string $input
+     * @return string
      */
     public static function cleanOutput($input) {
-        if(is_array($input)) {
-            $output = array();
-            foreach($input as $value) {
-                $output[] = htmlspecialchars($value);
-            }
-            return $output;
-        }
-
         return htmlspecialchars($input);
     }
 
