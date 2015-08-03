@@ -1,6 +1,6 @@
 # Server Query
 
-This is a very basic game server query framework. It's designed to be easily extendable to accommodate more games.
+This is a very basic game server query framework. It's designed to be easily extendable to accommodate more games. It requires PHP 5.3+.
 
 ## Installation
 
