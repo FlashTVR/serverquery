@@ -56,17 +56,17 @@ class SQ_Game_Minecraft extends SQ_Gameserver {
     protected function query($timeout) {
         if($this->config['useLegacy']) {
             if(!class_exists('SQ_MinecraftLegacy')) {
-                require __DIR__ . '/inc/MinecraftLegacy.class.php';
+                require dirname(__FILE__) . '/inc/MinecraftLegacy.class.php';
             }
             $obj = new SQ_MinecraftLegacy($this);
         } elseif($this->config['useQuery']) {
             if(!class_exists('SQ_MinecraftQuery')) {
-                require __DIR__ . '/inc/MinecraftQuery.class.php';
+                require dirname(__FILE__) . '/inc/MinecraftQuery.class.php';
             }
             $obj = new SQ_MinecraftQuery($this, $this->config['queryPort']);
         } else {
             if(!class_exists('SQ_MinecraftSLP')) {
-                require __DIR__ . '/inc/MinecraftSLP.class.php';
+                require dirname(__FILE__) . '/inc/MinecraftSLP.class.php';
             }
             $obj = new SQ_MinecraftSLP($this);
         }

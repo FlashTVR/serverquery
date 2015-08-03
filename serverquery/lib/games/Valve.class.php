@@ -24,7 +24,7 @@
  * THE SOFTWARE.
  */
 
-require __DIR__ . '/inc/ValveBuffer.class.php';
+require dirname(__FILE__) . '/inc/ValveBuffer.class.php';
 
 /**
  * Base class for all Valve-based games
