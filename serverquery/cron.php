@@ -24,12 +24,14 @@
  * THE SOFTWARE.
  */
 
+namespace SQ;
+
 require __DIR__ . '/config.php';
 require __DIR__ . '/lib/ServerQuery.class.php';
 
-$sleepTime = SQ_Config::CACHE_TIME;
+$sleepTime = Config::CACHE_TIME;
 
-$sq = new SQ_ServerQuery();
+$sq = new ServerQuery();
 
 $startTime = time();
 while(time() - $startTime < 60 - $sleepTime) {

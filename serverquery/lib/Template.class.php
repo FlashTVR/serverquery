@@ -24,20 +24,22 @@
  * THE SOFTWARE.
  */
 
+namespace SQ;
+
 /**
  * Helper class for preparing output data for use in the HTML template
  *
  * @author Steve Guidetti
  */
-class SQ_Template {
+class Template {
 
     /**
      * Get array of output data to use in the template
      * 
-     * @param SQ_ServerQuery $sq Main application object populated with server data
+     * @param \SQ\ServerQuery $sq Main application object populated with server data
      * @return mixed[]
      */
-    public static function getTemplateData(SQ_ServerQuery $sq) {
+    public static function getTemplateData(ServerQuery $sq) {
         $servers = $sq->getServers();
         $serverOutput = array();
         foreach($servers as $gs) {
@@ -46,24 +48,24 @@ class SQ_Template {
 
         return array(
             'servers' => $serverOutput,
-            'stylesheet' => SQ_Config::WEB_PATH . 'serverquery.css',
+            'stylesheet' => Config::WEB_PATH . 'serverquery.css',
         );
     }
 
     /**
      * Get object containing the output data for a single server
      * 
-     * @param SQ_Gameserver $gs 
-     * @return stdClass Anonymous object containing template values
+     * @param \SQ\Gameserver $gs 
+     * @return \stdClass Anonymous object containing template values
      */
-    private static function getServerTemplateData(SQ_Gameserver $gs) {
-        $server = new stdClass();
+    private static function getServerTemplateData(Gameserver $gs) {
+        $server = new \stdClass();
         $server->online = $gs->isOnline();
         $server->error = $gs->getError();
 
         $gameId = $gs->getGameId();
         $server->gameId = $gameId;
-        $server->gameName = self::cleanOutput(SQ_Config::$games[$gameId]['name']);
+        $server->gameName = self::cleanOutput(Config::$games[$gameId]['name']);
         $server->gameIcon = self::getGameImageURL($gameId);
 
         $server->addr = $gs->getAddress();
@@ -98,7 +100,7 @@ class SQ_Template {
      * @return string
      */
     private static function getGameImageURL($gameId) {
-        return SQ_Config::WEB_PATH . 'img/games/' . $gameId . '.png';
+        return Config::WEB_PATH . 'img/games/' . $gameId . '.png';
     }
 
 }

@@ -24,6 +24,8 @@
  * THE SOFTWARE.
  */
 
+namespace SQ\Game;
+
 require __DIR__ . '/inc/ValveBuffer.class.php';
 
 /**
@@ -31,7 +33,7 @@ require __DIR__ . '/inc/ValveBuffer.class.php';
  *
  * @author Steve Guidetti
  */
-class SQ_Game_Valve extends SQ_Gameserver {
+class Valve extends \SQ\Gameserver {
 
     protected $defaultConfig = array(
         /**
@@ -62,7 +64,7 @@ class SQ_Game_Valve extends SQ_Gameserver {
     protected function query($timeout) {
         $fp = @stream_socket_client('udp://' . $this->getAddress(), $errno, $errstr, $timeout);
         if(!$fp) {
-            throw new Exception($errstr, $errno);
+            throw new \Exception($errstr, $errno);
         }
 
         stream_set_timeout($fp, $timeout);
@@ -71,10 +73,10 @@ class SQ_Game_Valve extends SQ_Gameserver {
             $this->makeInfoRequest($fp);
             try {
                 $this->makePlayerRequest($fp);
-            } catch(Exception $e) {
+            } catch(\Exception $e) {
                 $this->setPlayerList(array());
             }
-        } catch(Exception $e) {
+        } catch(\Exception $e) {
             fclose($fp);
             throw $e;
         }
@@ -86,7 +88,7 @@ class SQ_Game_Valve extends SQ_Gameserver {
      * Request server info from the server
      * 
      * @param resource $fp Handle to an open socket
-     * @throws Exception
+     * @throws \Exception
      */
     protected function makeInfoRequest($fp) {
         $req = pack('ccccca*', 0xFF, 0xFF, 0xFF, 0xFF, 0x54, "Source Engine Query\0");
@@ -95,7 +97,7 @@ class SQ_Game_Valve extends SQ_Gameserver {
         $res = self::assembleResponse($fp);
 
         if($res->getByte() !== 0x49) {
-            throw new Exception('Invalid info response');
+            throw new \Exception('Invalid info response');
         }
 
         $res->getByte(); // protocol version
@@ -118,7 +120,7 @@ class SQ_Game_Valve extends SQ_Gameserver {
      * 
      * @param resource $fp Handle to an open socket
      * @return int Challenge number
-     * @throws Exception
+     * @throws \Exception
      */
     protected static function getChallengeNumber($fp) {
         $req = pack('cccccl', 0xFF, 0xFF, 0xFF, 0xFF, 0x55, -1);
@@ -126,7 +128,7 @@ class SQ_Game_Valve extends SQ_Gameserver {
 
         $res = self::assembleResponse($fp);
         if($res->getByte() !== 0x41) {
-            throw new Exception('Bad challenge response');
+            throw new \Exception('Bad challenge response');
         }
         return $res->getLong();
     }
@@ -135,7 +137,7 @@ class SQ_Game_Valve extends SQ_Gameserver {
      * Request the list of players on the server
      * 
      * @param resource $fp Handle to an open socket
-     * @throws Exception
+     * @throws \Exception
      */
     protected function makePlayerRequest($fp) {
         $challenge = self::getChallengeNumber($fp);
@@ -146,7 +148,7 @@ class SQ_Game_Valve extends SQ_Gameserver {
         $res = self::assembleResponse($fp);
 
         if($res->getByte() !== 0x44) {
-            throw new Exception('Invalid player response');
+            throw new \Exception('Invalid player response');
         }
 
         $this->readPlayerResponse($res);
@@ -155,9 +157,9 @@ class SQ_Game_Valve extends SQ_Gameserver {
     /**
      * Read the response to the player list request
      * 
-     * @param SQ_ValveBuffer $res
+     * @param \SQ\Game\ValveBuffer $res
      */
-    protected function readPlayerResponse(SQ_ValveBuffer $res) {
+    protected function readPlayerResponse(ValveBuffer $res) {
         $playerCount = $res->getByte();
         $players = array();
         while(count($players) < $playerCount) {
@@ -227,22 +229,22 @@ class SQ_Game_Valve extends SQ_Gameserver {
      * Read response and combine packets if necessary
      * 
      * @param resource $fp Handle to an open socket
-     * @return SQ_ValveBuffer Response payload
-     * @throws Exception
+     * @return \SQ\Game\ValveBuffer Response payload
+     * @throws \Exception
      */
     protected static function assembleResponse($fp) {
-        $buffer = new SQ_ValveBuffer();
+        $buffer = new ValveBuffer();
 
         $buffer->set(fread($fp, 1400));
 
         if($buffer->remaining() < 4) {
-            throw new Exception('Invalid response from server');
+            throw new \Exception('Invalid response from server');
         }
 
         if($buffer->getLong() == -1) {
             return $buffer;
         } else {
-            throw new Exception('Multipart responses are not yet implemented');
+            throw new \Exception('Multipart responses are not yet implemented');
         }
     }
 

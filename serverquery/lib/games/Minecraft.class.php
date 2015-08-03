@@ -24,12 +24,14 @@
  * THE SOFTWARE.
  */
 
+namespace SQ\Game;
+
 /**
  * Game: Minecraft
  *
  * @author Steve Guidetti
  */
-class SQ_Game_Minecraft extends SQ_Gameserver {
+class Minecraft extends \SQ\Gameserver {
 
     protected $defaultConfig = array(
         /**
@@ -58,17 +60,17 @@ class SQ_Game_Minecraft extends SQ_Gameserver {
             if(!class_exists('SQ_MinecraftLegacy')) {
                 require __DIR__ . '/inc/MinecraftLegacy.class.php';
             }
-            $obj = new SQ_MinecraftLegacy($this);
+            $obj = new MinecraftLegacy($this);
         } elseif($this->config['useQuery']) {
             if(!class_exists('SQ_MinecraftQuery')) {
                 require __DIR__ . '/inc/MinecraftQuery.class.php';
             }
-            $obj = new SQ_MinecraftQuery($this, $this->config['queryPort']);
+            $obj = new MinecraftQuery($this, $this->config['queryPort']);
         } else {
             if(!class_exists('SQ_MinecraftSLP')) {
                 require __DIR__ . '/inc/MinecraftSLP.class.php';
             }
-            $obj = new SQ_MinecraftSLP($this);
+            $obj = new MinecraftSLP($this);
         }
 
         $obj->query($timeout);

@@ -24,12 +24,14 @@
  * THE SOFTWARE.
  */
 
+namespace SQ;
+
 /**
  * Base class for game query classes
  *
  * @author Steve Guidetti
  */
-abstract class SQ_Gameserver {
+abstract class Gameserver {
 
     /**
      * Key from the SQConfig::$games array
@@ -338,10 +340,10 @@ abstract class SQ_Gameserver {
         $this->online = false;
 
         try {
-            $timeout = (int)SQ_Config::QUERY_TIMEOUT > 0 ? SQ_Config::QUERY_TIMEOUT : 1;
+            $timeout = (int)Config::QUERY_TIMEOUT > 0 ? Config::QUERY_TIMEOUT : 1;
             $this->query($timeout);
             $this->online = true;
-        } catch(Exception $e) {
+        } catch(\Exception $e) {
             $this->error = $e->getMessage();
         }
 
@@ -352,7 +354,7 @@ abstract class SQ_Gameserver {
      * Query the server for stats over the network
      * 
      * @param int $timeout Socket timeout in seconds
-     * @throws Exception
+     * @throws \Exception
      */
     protected abstract function query($timeout);
 }

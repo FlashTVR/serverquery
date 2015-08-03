@@ -24,26 +24,28 @@
  * THE SOFTWARE.
  */
 
+namespace SQ\Game;
+
 /**
  * Uses the legacy Server List Ping protocol to query Minecraft servers
  *
  * @author Steve Guidetti
  */
-class SQ_MinecraftLegacy {
+class MinecraftLegacy {
 
     /**
      * Mincraft Gameserver object
      *
-     * @var SQ_Game_Minecraft
+     * @var \SQ\Game\Minecraft
      */
     private $gs;
 
     /**
      * Constructor
      * 
-     * @param SQ_Game_Minecraft $gs Mincraft Gameserver object
+     * @param \SQ\Game\Minecraft $gs Mincraft Gameserver object
      */
-    public function __construct(SQ_Game_Minecraft $gs) {
+    public function __construct(Minecraft $gs) {
         $this->gs = $gs;
     }
 
@@ -51,12 +53,12 @@ class SQ_MinecraftLegacy {
      * Query the server using the old Server List Ping request
      * 
      * @param int $timeout Socket timeout in seconds
-     * @throws Exception
+     * @throws \Exception
      */
     public function query($timeout) {
         $fp = @stream_socket_client('tcp://' . $this->gs->getAddress(), $errno, $errstr, $timeout);
         if(!$fp) {
-            throw new Exception($errstr, $errno);
+            throw new \Exception($errstr, $errno);
         }
 
         stream_set_timeout($fp, $timeout);
@@ -64,7 +66,7 @@ class SQ_MinecraftLegacy {
         try {
             $this->sendRequest($fp);
             $this->readResponse($fp);
-        } catch(Exception $e) {
+        } catch(\Exception $e) {
             fclose($fp);
             throw $e;
         }
@@ -91,12 +93,12 @@ class SQ_MinecraftLegacy {
      * Read and parse the response
      * 
      * @param resource $fp Handle to an open socket
-     * @throws Exception
+     * @throws \Exception
      */
     private function readResponse($fp) {
         $res = fread($fp, 3);
         if(strpos($res, 0xFF) !== 0) {
-            throw new Exception('Invalid ping response');
+            throw new \Exception('Invalid ping response');
         }
 
         $res = fread($fp, 2048);

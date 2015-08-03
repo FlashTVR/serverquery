@@ -24,26 +24,28 @@
  * THE SOFTWARE.
  */
 
+namespace SQ\Game;
+
 /**
  * Uses the post-1.7 Server List Ping protocol to query Minecraft servers
  *
  * @author Steve Guidetti
  */
-class SQ_MinecraftSLP {
+class MinecraftSLP {
 
     /**
      * Mincraft Gameserver object
      *
-     * @var SQ_Game_Minecraft
+     * @var \SQ\Game\Minecraft
      */
     private $gs;
 
     /**
      * Constructor
      * 
-     * @param SQ_Game_Minecraft $gs Mincraft Gameserver object
+     * @param \SQ\Game\Minecraft $gs Mincraft Gameserver object
      */
-    public function __construct(SQ_Game_Minecraft $gs) {
+    public function __construct(Minecraft $gs) {
         $this->gs = $gs;
     }
 
@@ -51,12 +53,12 @@ class SQ_MinecraftSLP {
      * Query the server using the Server List Ping protocol
      * 
      * @param int $timeout Socket timeout in seconds
-     * @throws Exception
+     * @throws \Exception
      */
     public function query($timeout) {
         $fp = @stream_socket_client('tcp://' . $this->gs->getAddress(), $errno, $errstr, $timeout);
         if(!$fp) {
-            throw new Exception($errstr, $errno);
+            throw new \Exception($errstr, $errno);
         }
 
         stream_set_timeout($fp, $timeout);
@@ -64,7 +66,7 @@ class SQ_MinecraftSLP {
         try {
             $this->sendRequest($fp);
             $this->readResponse($fp);
-        } catch(Exception $e) {
+        } catch(\Exception $e) {
             fclose($fp);
             throw $e;
         }
@@ -76,7 +78,7 @@ class SQ_MinecraftSLP {
      * Send a Server List Ping request
      * 
      * @param resource $fp Handle to an open socket
-     * @throws Exception
+     * @throws \Exception
      */
     private function sendRequest($fp) {
         $req = array(
@@ -97,7 +99,7 @@ class SQ_MinecraftSLP {
      * Read the JSON text from the response
      * 
      * @param resource $fp Handle to an open socket
-     * @throws Exception
+     * @throws \Exception
      */
     private function readResponse($fp) {
         self::unpackVarInt($fp);
@@ -116,12 +118,12 @@ class SQ_MinecraftSLP {
      * Parse the JSON string and set server status properties
      * 
      * @param string $jsonString
-     * @throws Exception
+     * @throws \Exception
      */
     private function parseJSON($jsonString) {
         $json = json_decode($jsonString);
         if(!$json) {
-            throw new Exception('Invalid JSON string');
+            throw new \Exception('Invalid JSON string');
         }
 
         $this->gs->setName($json->description);
@@ -170,7 +172,7 @@ class SQ_MinecraftSLP {
      * 
      * @param resource $fp Handle to an open socket
      * @return int
-     * @throws Exception
+     * @throws \Exception
      */
     private static function unpackVarInt($fp) {
         $int = 0;
@@ -179,7 +181,7 @@ class SQ_MinecraftSLP {
             $byte = ord(fread($fp, 1));
             $int |= ($byte & 0x7F) << $pos++ * 7;
             if($pos > 5) {
-                throw new Exception('VarInt too large');
+                throw new \Exception('VarInt too large');
             }
             if(($byte & 0x80) !== 128) {
                 return $int;

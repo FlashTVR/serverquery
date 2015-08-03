@@ -24,17 +24,19 @@
  * THE SOFTWARE.
  */
 
+namespace SQ\Game;
+
 /**
  * Uses the Query protocol to query Minecraft servers
  *
  * @author Steve Guidetti
  */
-class SQ_MinecraftQuery {
+class MinecraftQuery {
 
     /**
      * Mincraft Gameserver object
      *
-     * @var SQ_Game_Minecraft
+     * @var \SQ\Game\Minecraft
      */
     private $gs;
 
@@ -48,10 +50,10 @@ class SQ_MinecraftQuery {
     /**
      * Constructor
      * 
-     * @param SQ_Game_Minecraft $gs Mincraft Gameserver object
+     * @param \SQ\Game\Minecraft $gs Mincraft Gameserver object
      * @param int $queryPort Port used to query the server
      */
-    public function __construct(SQ_Game_Minecraft $gs, $queryPort = 25565) {
+    public function __construct(Minecraft $gs, $queryPort = 25565) {
         $this->gs = $gs;
         $this->queryPort = $queryPort;
     }
@@ -60,12 +62,12 @@ class SQ_MinecraftQuery {
      * Query the server using the Query protocol
      * 
      * @param int $timeout Socket timeout in seconds
-     * @throws Exception
+     * @throws \Exception
      */
     public function query($timeout) {
         $fp = @stream_socket_client('udp://' . $this->getQueryAddress(), $errno, $errstr, $timeout);
         if(!$fp) {
-            throw new Exception($errstr, $errno);
+            throw new \Exception($errstr, $errno);
         }
 
         stream_set_timeout($fp, $timeout);
@@ -79,7 +81,7 @@ class SQ_MinecraftQuery {
             $this->parseKeyValues($fp);
             fread($fp, 10);
             $this->parsePlayers($fp);
-        } catch(Exception $e) {
+        } catch(\Exception $e) {
             fclose($fp);
             throw $e;
         }
@@ -102,7 +104,7 @@ class SQ_MinecraftQuery {
      * @param resource $fp Handle to an open socket
      * @param int $sessId Session ID (random number)
      * @return int Token
-     * @throws Exception
+     * @throws \Exception
      */
     private static function performHandshake($fp, $sessId) {
         $req = pack('cccN', 0xFE, 0xFD, 9, $sessId);
@@ -110,11 +112,11 @@ class SQ_MinecraftQuery {
 
         $res = fread($fp, 2048);
         if(strlen($res) < 5) {
-            throw new Exception('Invalid handshake response');
+            throw new \Exception('Invalid handshake response');
         }
         $header = unpack('ctype/NsessId', $res);
         if($header['type'] !== 9 || $header['sessId'] !== $sessId) {
-            throw new Exception('Invalid handshake header');
+            throw new \Exception('Invalid handshake header');
         }
         return (int)substr($res, 5, -1);
     }
@@ -125,7 +127,7 @@ class SQ_MinecraftQuery {
      * @param resource $fp Handle to an open socket
      * @param int $sessId Session ID
      * @param int $token Challenge token
-     * @throws Exception
+     * @throws \Exception
      */
     private static function requestStat($fp, $sessId, $token) {
         $req = pack('cccNNN', 0xFE, 0xFD, 0, $sessId, $token, 0);
@@ -134,7 +136,7 @@ class SQ_MinecraftQuery {
         $res = fread($fp, 5);
         $header = unpack('ctype/NsessId', $res);
         if($header['type'] !== 0 || $header['sessId'] !== $sessId) {
-            throw new Exception('Invalid response header');
+            throw new \Exception('Invalid response header');
         }
     }
 

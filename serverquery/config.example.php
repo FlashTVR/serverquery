@@ -24,12 +24,14 @@
  * THE SOFTWARE.
  */
 
+namespace SQ;
+
 /**
  * Application configuration
  *
  * @author Steve Guidetti
  */
-class SQ_Config {
+class Config {
 
     /**
      * Enable caching of server response data

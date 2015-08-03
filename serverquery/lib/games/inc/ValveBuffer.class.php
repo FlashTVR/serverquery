@@ -24,12 +24,14 @@
  * THE SOFTWARE.
  */
 
+namespace SQ\Game;
+
 /**
  * Buffer for Valve query responses
  *
  * @author Steve Guidetti
  */
-class SQ_ValveBuffer {
+class ValveBuffer {
 
     private $buffer = '';
     private $length = 0;

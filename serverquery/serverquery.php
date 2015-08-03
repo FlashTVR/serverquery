@@ -24,12 +24,14 @@
  * THE SOFTWARE.
  */
 
+namespace SQ;
+
 require __DIR__ . '/config.php';
 require __DIR__ . '/lib/ServerQuery.class.php';
 require __DIR__ . '/lib/Template.class.php';
 
-$sq = new SQ_ServerQuery();
+$sq = new ServerQuery();
 $sq->exec();
 
-$data = SQ_Template::getTemplateData($sq);
+$data = Template::getTemplateData($sq);
 require __DIR__ . '/template.php';

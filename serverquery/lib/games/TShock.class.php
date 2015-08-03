@@ -24,12 +24,14 @@
  * THE SOFTWARE.
  */
 
+namespace SQ\Game;
+
 /**
  * Game: TShock (Terraria server)
  *
  * @author Steve Guidetti
  */
-class SQ_Game_TShock extends SQ_Gameserver {
+class TShock extends \SQ\Gameserver {
 
     protected $defaultConfig = array(
         /**
@@ -43,17 +45,17 @@ class SQ_Game_TShock extends SQ_Gameserver {
         $c = stream_context_create(array('http' => array('timeouut' => $timeout)));
         $res = @file_get_contents($this->getRestURL('/v2/server/status?players=true'), false, $c);
         if(!$res) {
-            throw new Exception('REST request failed');
+            throw new \Exception('REST request failed');
         }
 
         $obj = json_decode($res);
         if(!$obj) {
-            throw new Exception('Invalid response from server');
+            throw new \Exception('Invalid response from server');
         }
 
         $status = (int)$obj->status;
         if($status !== 200) {
-            throw new Exception($obj->error, $status);
+            throw new \Exception($obj->error, $status);
         }
 
         $this->setName($obj->name);
