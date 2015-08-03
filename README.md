@@ -48,3 +48,12 @@ On linux, this can be achieved by adding a line to your crontab like the one bel
 ```
 * * * * * php /path/to/cron.php > /dev/null 2>&1
 ```
+
+## License
+
+This project is released under the [MIT License](http://sguidetti.mit-license.org/).
+
+## Changes
+
+- Aug 03, 2015 [v.0.1.0]
+   * Initial release
