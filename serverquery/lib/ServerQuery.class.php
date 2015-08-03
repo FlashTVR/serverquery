@@ -24,7 +24,7 @@
  * THE SOFTWARE.
  */
 
-require dirname(__FILE__) . '/Gameserver.class.php';
+require __DIR__ . '/Gameserver.class.php';
 
 /**
  * Main application class
@@ -59,7 +59,7 @@ class SQ_ServerQuery {
      */
     public function __construct() {
         if(SQ_Config::CACHE_ENABLE) {
-            $dir = dirname(__FILE__) . '/../cache';
+            $dir = __DIR__ . '/../cache';
             $this->useCache = is_dir($dir) && is_writable($dir);
             $this->cronMode = $this->useCache && SQ_Config::CRON_MODE;
         }
@@ -143,7 +143,7 @@ class SQ_ServerQuery {
     private static function initServerObject(array $server) {
         $className = 'SQ_Game_' . SQ_Config::$games[$server['game']]['class'];
         if(!class_exists($className)) {
-            $fileName = dirname(__FILE__) . '/games/';
+            $fileName = __DIR__ . '/games/';
             $fileName .= substr($className, strrpos($className, '_') + 1);
             $fileName .= '.class.php';
             require $fileName;
@@ -210,7 +210,7 @@ class SQ_ServerQuery {
      * @return string
      */
     private static function getCacheFileName(SQ_Gameserver $server) {
-        $fileName = dirname(__FILE__) . '/../cache/';
+        $fileName = __DIR__ . '/../cache/';
         $fileName .= $server->getGameId() . '_';
         $fileName .= str_replace(':', '_', $server->getAddress());
         $fileName .= '.dat';

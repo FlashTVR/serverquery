@@ -24,12 +24,12 @@
  * THE SOFTWARE.
  */
 
-require dirname(__FILE__) . '/config.php';
-require dirname(__FILE__) . '/lib/ServerQuery.class.php';
-require dirname(__FILE__) . '/lib/Template.class.php';
+require __DIR__ . '/config.php';
+require __DIR__ . '/lib/ServerQuery.class.php';
+require __DIR__ . '/lib/Template.class.php';
 
 $sq = new SQ_ServerQuery();
 $sq->exec();
 
 $data = SQ_Template::getTemplateData($sq);
-require dirname(__FILE__) . '/template.php';
+require __DIR__ . '/template.php';
