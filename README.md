@@ -6,7 +6,7 @@ This is a very basic game server query framework. It's designed to be easily ext
 
 1. Upload the `serverquery/` directory to your website
    - If you are using the cache (default/recommended), make sure the `serverquery/cache/` directory is writable
-2. Edit the `config.php` file with your settings, games, and servers
+2. Rename `config.example.php` to `config.php` and edit it with your settings, games, and servers
    - Edit `template.php` and/or `serverquery.css` as needed
 3. Include `serverquery/serverquery.php` using `include` or `require` somewhere on your webpage
 
