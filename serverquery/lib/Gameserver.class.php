@@ -339,19 +339,19 @@ abstract class Gameserver {
      * @return bool false on failure or if the configuration is changed
      */
     public function fromJSON($json) {
-        $obj = json_decode($json);
-        if(!$obj || $obj->config !== $this->config) {
+        $data = json_decode($json, true);
+        if(!$data || $data['config'] !== $this->config) {
             return false;
         }
 
-        $this->name = $obj->name;
-        $this->mapName = $obj->mapName;
-        $this->playerCount = $obj->playerCount;
-        $this->maxPlayers = $obj->maxPlayers;
-        $this->playerList = $obj->playerList;
-        $this->queryTime = $obj->queryTime;
-        $this->error = $obj->error;
-        $this->online = $obj->online;
+        $this->name = $data['name'];
+        $this->mapName = $data['mapName'];
+        $this->playerCount = $data['playerCount'];
+        $this->maxPlayers = $data['maxPlayers'];
+        $this->playerList = $data['playerList'];
+        $this->queryTime = $data['queryTime'];
+        $this->error = $data['error'];
+        $this->online = $data['online'];
 
         return true;
     }
@@ -362,19 +362,19 @@ abstract class Gameserver {
      * @return string
      */
     public function toJSON() {
-        $obj = new \stdClass();
+        $data = array();
 
-        $obj->config = $this->config;
-        $obj->name = $this->name;
-        $obj->mapName = $this->mapName;
-        $obj->playerCount = $this->playerCount;
-        $obj->maxPlayers = $this->maxPlayers;
-        $obj->playerList = $this->playerList;
-        $obj->queryTime = $this->queryTime;
-        $obj->error = $this->error;
-        $obj->online = $this->online;
+        $data['config'] = $this->config;
+        $data['name'] = $this->name;
+        $data['mapName'] = $this->mapName;
+        $data['playerCount'] = $this->playerCount;
+        $data['maxPlayers'] = $this->maxPlayers;
+        $data['playerList'] = $this->playerList;
+        $data['queryTime'] = $this->queryTime;
+        $data['error'] = $this->error;
+        $data['online'] = $this->online;
 
-        return json_encode($obj);
+        return json_encode($data);
     }
 
     /**
