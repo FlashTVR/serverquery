@@ -56,10 +56,10 @@ class Template {
      * Get object containing the output data for a single server
      * 
      * @param \SQ\Gameserver $gs 
-     * @return \stdClass Anonymous object containing template values
+     * @return \SQ\TemplateHolder Object containing template values
      */
     private static function getServerTemplateData(Gameserver $gs) {
-        $server = new \stdClass();
+        $server = new TemplateHolder();
         $server->online = $gs->isOnline();
         $server->error = $gs->getError();
 
