@@ -69,7 +69,7 @@ class ServerQuery {
 
     /**
      * Get the list of Gameserver objects
-     * 
+     *
      * @return \SQ\Gameserver[]
      */
     public function getServers() {
@@ -88,7 +88,7 @@ class ServerQuery {
 
     /**
      * Execute cron tasks
-     * 
+     *
      * @param int $timeLimit Maximum execution time in seconds
      */
     public function cron($timeLimit = 60) {
@@ -108,18 +108,14 @@ class ServerQuery {
 
     /**
      * Get a Gameserver object based on a server config
-     * 
+     *
      * @param mixed[] $server Element from the servers config
      * @param bool $update Query server for updated status
      * @return \SQ\Gameserver
      */
     private function getServerObject(array $server, $update = true) {
         $gs = self::initServerObject($server);
-        if($this->useCache) {
-            $cached = self::getFromCache($gs);
-            if($cached) {
-                $gs = $cached;
-            }
+        if($this->useCache && self::getFromCache($gs)) {
             if(time() - $gs->getQueryTime() < Config::CACHE_TIME) {
                 return $gs;
             }
@@ -138,7 +134,7 @@ class ServerQuery {
 
     /**
      * Initialize a Gameserver object based on a server config
-     * 
+     *
      * @param mixed[] $server Element from the servers config
      * @return \SQ\Gameserver
      */
@@ -156,7 +152,7 @@ class ServerQuery {
 
     /**
      * Get the combined server config array
-     * 
+     *
      * @param mixed[] $server Element from the servers config
      * @return mixed[]
      */
@@ -171,10 +167,10 @@ class ServerQuery {
     }
 
     /**
-     * Retrieve a Gameserver object from the cache
-     * 
+     * Load cached data into a Gameserver object
+     *
      * @param \SQ\Gameserver $server
-     * @return \SQ\Gameserver|false Boolean false if object is not found
+     * @return bool false if object is not found or data is invalid
      */
     private static function getFromCache(Gameserver $server) {
         $fileName = self::getCacheFileName($server);
@@ -184,30 +180,24 @@ class ServerQuery {
         }
 
         $data = file_get_contents($fileName);
-        $gs = unserialize($data);
-
-        if(!$gs || $gs->getConfig() !== $server->getConfig()) {
-            return false;
-        }
-
-        return $gs;
+        return $server->fromJSON($data);
     }
 
     /**
      * Store a Gameserver object in the cache
-     * 
+     *
      * @param \SQ\Gameserver $server
      */
     private static function updateCache(Gameserver $server) {
         $fileName = self::getCacheFileName($server);
 
-        $data = serialize($server);
+        $data = $server->toJSON();
         file_put_contents($fileName, $data);
     }
 
     /**
      * Get the name of a cache file based on a Gameserver object
-     * 
+     *
      * @param \SQ\Gameserver $server
      * @return string
      */
@@ -215,7 +205,7 @@ class ServerQuery {
         $fileName = __DIR__ . '/../cache/';
         $fileName .= $server->getGameId() . '_';
         $fileName .= str_replace(':', '_', $server->getAddress());
-        $fileName .= '.dat';
+        $fileName .= '.json';
 
         return $fileName;
     }

@@ -126,7 +126,7 @@ abstract class Gameserver {
 
     /**
      * Constructor
-     * 
+     *
      * @param string $gameId Key from the SQConfig::$games array
      * @param string $addr Full server address
      * @param mixed[] $config Optional array of options for this instance
@@ -139,7 +139,7 @@ abstract class Gameserver {
 
     /**
      * Get the ID for the game currently running
-     * 
+     *
      * @return string
      */
     public final function getGameId() {
@@ -148,7 +148,7 @@ abstract class Gameserver {
 
     /**
      * Get full server address
-     * 
+     *
      * @return string
      */
     public function getAddress() {
@@ -157,7 +157,7 @@ abstract class Gameserver {
 
     /**
      * Set full server address
-     * 
+     *
      * @param string $addr Format: "hostname" or "hostname:port"
      */
     public function setAddress($addr) {
@@ -172,7 +172,7 @@ abstract class Gameserver {
 
     /**
      * Get the current configuration for this instance
-     * 
+     *
      * @return mixed[]
      */
     public function getConfig() {
@@ -181,7 +181,7 @@ abstract class Gameserver {
 
     /**
      * Set the configuration for this instance
-     * 
+     *
      * @param mixed[] $config
      */
     public function setConfig(array $config) {
@@ -190,7 +190,7 @@ abstract class Gameserver {
 
     /**
      * Get the server hostname
-     * 
+     *
      * @return string
      */
     public function getHostname() {
@@ -199,7 +199,7 @@ abstract class Gameserver {
 
     /**
      * Get the server game port
-     * 
+     *
      * @return int
      */
     public function getPort() {
@@ -208,7 +208,7 @@ abstract class Gameserver {
 
     /**
      * Get link to connect directly to the server
-     * 
+     *
      * @return string|null NULL if unsupported
      */
     public function getConnectLink() {
@@ -217,7 +217,7 @@ abstract class Gameserver {
 
     /**
      * Get server name
-     * 
+     *
      * @return string|null NULL if unsupported
      */
     public function getName() {
@@ -226,7 +226,7 @@ abstract class Gameserver {
 
     /**
      * Set server name
-     * 
+     *
      * @param string $name
      */
     public function setName($name) {
@@ -235,7 +235,7 @@ abstract class Gameserver {
 
     /**
      * Get name of map currently running
-     * 
+     *
      * @return string|null NULL if unsupported
      */
     public function getMapName() {
@@ -244,7 +244,7 @@ abstract class Gameserver {
 
     /**
      * Set name of current map
-     * 
+     *
      * @param string $mapName
      */
     public function setMapName($mapName) {
@@ -253,7 +253,7 @@ abstract class Gameserver {
 
     /**
      * Get number of players connected to the server
-     * 
+     *
      * @return int
      */
     public function getPlayerCount() {
@@ -262,7 +262,7 @@ abstract class Gameserver {
 
     /**
      * Set current player count
-     * 
+     *
      * @param int $count
      */
     public function setPlayerCount($count) {
@@ -271,7 +271,7 @@ abstract class Gameserver {
 
     /**
      * Get maximum number of players allowed on the server
-     * 
+     *
      * @return int
      */
     public function getMaxPlayers() {
@@ -280,7 +280,7 @@ abstract class Gameserver {
 
     /**
      * Set maximum number of players allowed
-     * 
+     *
      * @param int $maxPlayers
      */
     public function setMaxPlayers($maxPlayers) {
@@ -289,7 +289,7 @@ abstract class Gameserver {
 
     /**
      * Get list of players connected to the server
-     * 
+     *
      * @return string[]|null NULL if unsupported
      */
     public function getPlayerList() {
@@ -298,7 +298,7 @@ abstract class Gameserver {
 
     /**
      * Set current list of players
-     * 
+     *
      * @param string[] $playerList
      */
     public function setPlayerList(array $playerList) {
@@ -307,7 +307,7 @@ abstract class Gameserver {
 
     /**
      * The server is online
-     * 
+     *
      * @return bool
      */
     public final function isOnline() {
@@ -316,7 +316,7 @@ abstract class Gameserver {
 
     /**
      * Unix timestamp of the last update
-     * 
+     *
      * @return int
      */
     public final function getQueryTime() {
@@ -325,11 +325,56 @@ abstract class Gameserver {
 
     /**
      * Get the last query error
-     * 
+     *
      * @return string|null
      */
     public final function getError() {
         return $this->error;
+    }
+
+    /**
+     * Load data from a JSON formatted string
+     *
+     * @param string $json
+     * @return bool false on failure or if the configuration is changed
+     */
+    public function fromJSON($json) {
+        $obj = json_decode($json);
+        if(!$obj || $obj->config !== $this->config) {
+            return false;
+        }
+
+        $this->name = $obj->name;
+        $this->mapName = $obj->mapName;
+        $this->playerCount = $obj->playerCount;
+        $this->maxPlayers = $obj->maxPlayers;
+        $this->playerList = $obj->playerList;
+        $this->queryTime = $obj->queryTime;
+        $this->error = $obj->error;
+        $this->online = $obj->online;
+
+        return true;
+    }
+
+    /**
+     * Generate a JSON string representation of this instance
+     *
+     * @return string
+     */
+    public function toJSON() {
+        $obj = new \stdClass();
+
+        $obj->config = $this->config;
+        $obj->name = $this->name;
+        $obj->mapName = $this->mapName;
+        $obj->playerCount = $this->playerCount;
+        $obj->maxPlayers = $this->maxPlayers;
+        $obj->playerList = $this->playerList;
+        $obj->queryTime = $this->queryTime;
+        $obj->error = $this->error;
+        $obj->online = $this->online;
+
+        return json_encode($obj);
     }
 
     /**
@@ -352,7 +397,7 @@ abstract class Gameserver {
 
     /**
      * Query the server for stats over the network
-     * 
+     *
      * @param int $timeout Socket timeout in seconds
      * @throws \Exception
      */
