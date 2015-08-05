@@ -26,6 +26,8 @@
 
 namespace SQ;
 
+require __DIR__ . '/TemplateHolder.class.php';
+
 /**
  * Helper class for preparing output data for use in the HTML template
  *
