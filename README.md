@@ -55,5 +55,8 @@ This project is released under the [MIT License](http://sguidetti.mit-license.or
 
 ## Changes
 
+- Aug 21, 2015 [v.0.2.0]
+   * Uses namespaces (requires PHP 5.3+)
+   * Switched to JSON format to store cache data
 - Aug 03, 2015 [v.0.1.0]
    * Initial release
