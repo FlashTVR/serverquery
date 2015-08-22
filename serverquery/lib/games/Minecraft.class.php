@@ -57,17 +57,17 @@ class Minecraft extends \SQ\Gameserver {
 
     protected function query($timeout) {
         if($this->config['useLegacy']) {
-            if(!class_exists('SQ_MinecraftLegacy')) {
+            if(!class_exists('SQ\Game\MinecraftLegacy')) {
                 require __DIR__ . '/inc/MinecraftLegacy.class.php';
             }
             $obj = new MinecraftLegacy($this);
         } elseif($this->config['useQuery']) {
-            if(!class_exists('SQ_MinecraftQuery')) {
+            if(!class_exists('SQ\Game\MinecraftQuery')) {
                 require __DIR__ . '/inc/MinecraftQuery.class.php';
             }
             $obj = new MinecraftQuery($this, $this->config['queryPort']);
         } else {
-            if(!class_exists('SQ_MinecraftSLP')) {
+            if(!class_exists('SQ\Game\MinecraftSLP')) {
                 require __DIR__ . '/inc/MinecraftSLP.class.php';
             }
             $obj = new MinecraftSLP($this);
