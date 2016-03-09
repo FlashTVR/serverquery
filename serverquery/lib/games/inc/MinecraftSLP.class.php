@@ -126,7 +126,8 @@ class MinecraftSLP {
             throw new \Exception('Invalid JSON string');
         }
 
-        $this->gs->setName($json->description);
+        $name = $json->description;
+        $this->gs->setName(is_string($name) ? $name : $name->text);
         $this->gs->setPlayerCount($json->players->online);
         $this->gs->setMaxPlayers($json->players->max);
 
