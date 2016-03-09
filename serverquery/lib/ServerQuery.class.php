@@ -27,6 +27,7 @@
 namespace SQ;
 
 require __DIR__ . '/Gameserver.class.php';
+require __DIR__ . '/Cache.class.php';
 
 /**
  * Main application class
@@ -36,11 +37,11 @@ require __DIR__ . '/Gameserver.class.php';
 class ServerQuery {
 
     /**
-     * Use the cache to store server data
+     * The cache
      *
-     * @var bool
+     * @var \SQ\Cache
      */
-    private $useCache = false;
+    private $cache = null;
 
     /**
      * Cron mode is active
@@ -61,9 +62,8 @@ class ServerQuery {
      */
     public function __construct() {
         if(Config::CACHE_ENABLE) {
-            $dir = __DIR__ . '/../cache';
-            $this->useCache = is_dir($dir) && is_writable($dir);
-            $this->cronMode = $this->useCache && Config::CRON_MODE;
+            $this->cache = new Cache();
+            $this->cronMode = Config::CRON_MODE;
         }
     }
 
@@ -92,7 +92,7 @@ class ServerQuery {
      * @param int $timeLimit Maximum execution time in seconds
      */
     public function cron($timeLimit = 60) {
-        if($this->useCache) {
+        if(Config::CACHE_ENABLE) {
             shuffle(Config::$servers);
 
             $startTime = time();
@@ -115,7 +115,7 @@ class ServerQuery {
      */
     private function getServerObject(array $server, $update = true) {
         $gs = self::initServerObject($server);
-        if($this->useCache && self::getFromCache($gs)) {
+        if(Config::CACHE_ENABLE && $this->cache->get($gs)) {
             if(time() - $gs->getQueryTime() < Config::CACHE_TIME) {
                 return $gs;
             }
@@ -124,8 +124,8 @@ class ServerQuery {
         if($update) {
             $gs->update();
 
-            if($this->useCache) {
-                $this->updateCache($gs);
+            if(Config::CACHE_ENABLE) {
+                $this->cache->put($gs);
             }
         }
 
@@ -164,50 +164,6 @@ class ServerQuery {
         }
 
         return $config;
-    }
-
-    /**
-     * Load cached data into a Gameserver object
-     *
-     * @param \SQ\Gameserver $server
-     * @return bool false if object is not found or data is invalid
-     */
-    private static function getFromCache(Gameserver $server) {
-        $fileName = self::getCacheFileName($server);
-
-        if(!file_exists($fileName)) {
-            return false;
-        }
-
-        $data = file_get_contents($fileName);
-        return $server->fromJSON($data);
-    }
-
-    /**
-     * Store a Gameserver object in the cache
-     *
-     * @param \SQ\Gameserver $server
-     */
-    private static function updateCache(Gameserver $server) {
-        $fileName = self::getCacheFileName($server);
-
-        $data = $server->toJSON();
-        file_put_contents($fileName, $data);
-    }
-
-    /**
-     * Get the name of a cache file based on a Gameserver object
-     *
-     * @param \SQ\Gameserver $server
-     * @return string
-     */
-    private static function getCacheFileName(Gameserver $server) {
-        $fileName = __DIR__ . '/../cache/';
-        $fileName .= $server->getGameId() . '_';
-        $fileName .= str_replace(':', '_', $server->getAddress());
-        $fileName .= '.json';
-
-        return $fileName;
     }
 
 }
