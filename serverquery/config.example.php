@@ -93,6 +93,10 @@ class Config {
      * @var mixed[]
      */
     public static $games = array(
+        'aoc' => array(
+            'name'  => 'Age of Chivalry',
+            'class' => 'Valve',
+        ),
         'cs' => array(
             'name'  => 'Counter-Strike',
             'class' => 'Valve',
@@ -113,8 +117,16 @@ class Config {
             'name'  => 'Day of Defeat: Source',
             'class' => 'Valve',
         ),
+        'doi' => array(
+            'name'  => 'Day of Infamy',
+            'class' => 'Valve',
+        ),
         'ff' => array(
             'name'  => 'Fortress Forever',
+            'class' => 'Valve',
+        ),
+        'fof' => array(
+            'name'  => 'Fistful of Frags',
             'class' => 'Valve',
         ),
         'gmod' => array(
@@ -133,6 +145,10 @@ class Config {
             'name'  => 'Insurgency',
             'class' => 'Valve',
         ),
+        'ins2014' => array(
+            'name'  => 'Insurgency (2014)',
+            'class' => 'Valve',
+        ),
         'l4d' => array(
             'name'  => 'Left 4 Dead',
             'class' => 'Valve',
@@ -143,6 +159,14 @@ class Config {
         ),
         'ns' => array(
             'name'  => 'Natural Selection',
+            'class' => 'Valve',
+        ),
+        'ns2' => array(
+            'name'  => 'Natural Selection 2',
+            'class' => 'Valve',
+        ),
+        'syn' => array(
+            'name'  => 'Synergy',
             'class' => 'Valve',
         ),
         'tf2' => array(
