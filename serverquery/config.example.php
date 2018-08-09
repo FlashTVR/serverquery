@@ -169,6 +169,10 @@ class Config {
             'name'  => 'Synergy',
             'class' => 'Valve',
         ),
+        'teamspeak3' => array(
+            'name'  => 'TeamSpeak 3',
+            'class' => 'TeamSpeak3',
+        ),
         'tf2' => array(
             'name'  => 'Team Fortress 2',
             'class' => 'Valve',
