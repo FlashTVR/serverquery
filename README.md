@@ -40,6 +40,14 @@ Option      | Type    | Default | Description
 ----------- | ------- | ------- | -----------
 *queryPort* | integer | `7878`  | Port used to query the server REST API
 
+#### TeamSpeak 3
+
+Option      | Type    | Default | Description
+----------- | ------- | ------- | -----------
+*queryPort* | integer | `10011` | Port used by the ServerQuery protocol
+*queryUser* | string  |         | Username for the ServerQuery protocol
+*queryPass* | string  |         | Password for the ServerQuery protocol
+
 ## Cron Mode
 
 With cron mode enabled, the servers must be queried by `cron.php`. For best results, execute the script once every 1 minute.
