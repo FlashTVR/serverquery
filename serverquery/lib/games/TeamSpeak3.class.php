@@ -87,7 +87,7 @@ class TeamSpeak3 extends \SQ\Gameserver {
         $sockets = array($this->fp);
         if (!stream_select($sockets, $write, $except, $timeout))
         {
-            throw new \Exception('Connection timed out');;
+            throw new \Exception('Connection timed out');
         }
         stream_get_contents($this->fp);
 
@@ -202,7 +202,7 @@ class TeamSpeak3 extends \SQ\Gameserver {
         $sockets = array($this->fp);
         if (!stream_select($sockets, $write, $except, $this->timeout))
         {
-            throw new \Exception('Connection timed out');;
+            throw new \Exception('Connection timed out');
         }
         return self::parseResponse(stream_get_contents($this->fp), $err, $msg);
     }
