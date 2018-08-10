@@ -27,7 +27,7 @@
 namespace SQ\Game;
 
 /**
- * Base class for all Valve-based games
+ * Game: TeamSpeak 3
  *
  * @author Steve Guidetti
  */
