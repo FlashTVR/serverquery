@@ -116,16 +116,7 @@ class TeamSpeak3 extends \SQ\Gameserver {
             }
         }
 
-        $response = $this->sendCommand('serveridgetbyport virtualserver_port=' . $this->getPort(), $err, $msg);
-        if ($response === null)
-        {
-            throw new \Exception('Invalid response from server');
-        }
-        if ($err !== 0) {
-            throw new \Exception('Server select failed: ' . $msg);
-        }
-
-        $response = $this->sendCommand('use sid=' . (int) $response[0]['server_id'], $err, $msg);
+        $response = $this->sendCommand('use port=' . $this->getPort(), $err, $msg);
         if ($response === null)
         {
             throw new \Exception('Invalid response from server');
