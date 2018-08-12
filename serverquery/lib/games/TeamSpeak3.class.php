@@ -66,7 +66,7 @@ class TeamSpeak3 extends \SQ\Gameserver {
     {
         if ($this->fp)
         {
-            $this->sendCommand('quit');
+            fwrite($this->fp, "quit\r\n");
             fclose($this->fp);
         }
     }
@@ -190,12 +190,16 @@ class TeamSpeak3 extends \SQ\Gameserver {
             throw new \Exception('Failed to write to socket');
         }
 
+        $response = '';
         $sockets = array($this->fp);
-        if (!stream_select($sockets, $write, $except, $this->timeout))
-        {
-            throw new \Exception('Connection timed out');
+        while (preg_match('/error id=\d+ msg=.+\n/', $response) === 0) {
+            if (!stream_select($sockets, $write, $except, $this->timeout))
+            {
+                throw new \Exception('Connection timed out');
+            }
+            $response .= stream_get_contents($this->fp);
         }
-        return self::parseResponse(stream_get_contents($this->fp), $err, $msg);
+        return self::parseResponse($response, $err, $msg);
     }
 
     /**
